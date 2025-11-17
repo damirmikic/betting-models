@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Opta Power Ratings – Bivariate Poisson Odds</title>
+  <link rel="stylesheet" href="style.css" />
+  
+
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-gradient"></div>
+
+  <main class="shell">
+    <header class="header">
+        <nav class="top-nav">
+            <a href="snooker.html">Snooker Model</a>
+        </nav>
+      <div>
+        <h1>Opta Power Model</h1>
+        <p>Live 1X2 pricing from Opta ratings, league goal averages and draw correlation.</p>
+      </div>
+    </header>
+
+    <section class="card glass">
+      <h2 class="card-title">Match setup</h2>
+      <div class="controls-grid">
+        <!-- League -->
+        <div class="field">
+          <label for="leagueSelect">League</label>
+          <select id="leagueSelect">
+            <option value="">Select league</option>
+          </select>
+          <small class="hint">Loads avg home/away goals & draw% for the model.</small>
+        </div>
+
+        <!-- Home -->
+        <div class="field">
+          <label for="homeTeam">Home team</label>
+          <select id="homeTeam">
+            <option value="">Loading teams...</option>
+          </select>
+        </div>
+
+        <!-- Away -->
+        <div class="field">
+          <label for="awayTeam">Away team</label>
+          <select id="awayTeam">
+            <option value="">Loading teams...</option>
+          </select>
+        </div>
+
+        <!-- Alpha slider -->
+        <div class="field">
+          <label for="alphaSlider">
+            Alpha (rating → xG): <span id="alphaDisplay">0.070</span>
+          </label>
+          <input type="range" id="alphaSlider" min="0.000" max="0.150" step="0.001" value="0.070">
+          <small class="hint">Higher alpha = ratings have stronger impact on expected goals.</small>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button id="calculateBtn" disabled>Calculate odds</button>
+        <span id="status" class="status-text"></span>
+      </div>
+    </section>
+
+    <section class="layout-columns">
+  
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
+    <!-- Probabilities card -->
+    <section class="card glass">
+      <h2 class="card-title">1X2 Probabilities</h2>
+      <div class="prob-grid">
+        <div class="prob-card">
+          <div class="prob-label">Home</div>
+          <div class="prob-val" id="pHome">–</div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-label">Draw</div>
+          <div class="prob-val" id="pDraw">–</div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-label">Away</div>
+          <div class="prob-val" id="pAway">–</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Odds card -->
+    <section class="card glass">
+      <h2 class="card-title">1X2 Odds</h2>
+      <div class="odds-grid separated">
+        <div class="odds-card">
+          <div class="odds-label">Home (1)</div>
+          <div class="odds-odd" id="oHome">–</div>
+        </div>
+        <div class="odds-card">
+          <div class="odds-label">Draw (X)</div>
+          <div class="odds-odd" id="oDraw">–</div>
+        </div>
+        <div class="odds-card">
+          <div class="odds-label">Away (2)</div>
+          <div class="odds-odd" id="oAway">–</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+      <!-- Right: model details -->
+      <section class="card glass">
+        <h2 class="card-title">Model details</h2>
+        <div class="details-grid">
+          <div class="detail-row">
+            <span>Alpha</span>
+            <span id="alphaVal" class="detail-val">0.070</span>
+          </div>
+          <div class="detail-row">
+            <span>League avg goals</span>
+            <span class="detail-val">
+              home <span id="avgHome">–</span> · away <span id="avgAway">–</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span>League draw%</span>
+            <span id="drawRate" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>Rating diff (H–A)</span>
+            <span id="ratingDiff" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>EGD (expected goal diff)</span>
+            <span id="egd" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>λ<sub>home</sub></span>
+            <span id="lambdaHome" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>λ<sub>away</sub></span>
+            <span id="lambdaAway" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>λ<sub>3</sub> (correlation)</span>
+            <span id="lambda3Val" class="detail-val">–</span>
+          </div>
+        </div>
+        <p class="footnote">
+          λ₃ is solved so that model draw probability matches league draw% when possible;
+          if league draw% ≤ independent Poisson draw, λ₃ = 0.
+        </p>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <small>
+        Teams from Opta power rankings · League stats from <code>leagues_min.json</code>.
+      </small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

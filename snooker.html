@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Snooker Match Model – Frame Probabilities to Odds</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-gradient"></div>
+
+  <main class="shell">
+    <header class="header">
+      <div>
+        <h1>Snooker Match Model</h1>
+        <p>Transform frame-level edge into match winner, totals and handicap markets.</p>
+      </div>
+      <nav>
+        <a href="index.html" style="font-size:0.8rem;color:#9ca3af;text-decoration:none;">
+          ← Football model
+        </a>
+      </nav>
+    </header>
+
+    <!-- INPUT CARD -->
+    <section class="card glass">
+      <h2 class="card-title">Match setup</h2>
+
+      <div class="controls-grid">
+        <!-- Frame prob A -->
+        <div class="field">
+          <label for="frameProbA">
+            P(Player A wins frame)
+          </label>
+          <input type="number" id="frameProbA" min="0" max="1" step="0.01" value="0.60">
+          <small class="hint">Decimal 0–1. Example: 0.60 = 60%.</small>
+        </div>
+
+        <!-- Frame prob B (auto) -->
+        <div class="field">
+          <label for="frameProbB">
+            P(Player B wins frame)
+          </label>
+          <input type="number" id="frameProbB" disabled>
+          <small class="hint">Auto: 1 − P(A).</small>
+        </div>
+
+        <!-- Best-of format -->
+        <div class="field">
+          <label for="bestOfSelect">Best of</label>
+          <select id="bestOfSelect">
+            <option value="7">Best of 7 (FT4)</option>
+            <option value="9" selected>Best of 9 (FT5)</option>
+            <option value="11">Best of 11 (FT6)</option>
+            <option value="19">Best of 19 (FT10)</option>
+            <option value="25">Best of 25 (FT13)</option>
+            <option value="33">Best of 33 (FT17)</option>
+          </select>
+          <small class="hint">Standard snooker formats.</small>
+        </div>
+
+        <!-- Margin (overround) placeholder if you want later -->
+        <div class="field">
+          <label for="snookerMargin">
+            Margin (overround, optional)
+          </label>
+          <input type="number" id="snookerMargin" min="0" max="0.15" step="0.01" value="0.00">
+          <small class="hint">0.00 = fair odds. 0.05 ≈ 5% market margin.</small>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button id="snookerCalcBtn">Calculate markets</button>
+        <span id="snookerStatus" class="status-text"></span>
+      </div>
+    </section>
+
+    <!-- OUTPUT LAYOUT -->
+    <section class="layout-columns">
+
+      <!-- LEFT COLUMN: prices -->
+      <div class="left-col">
+
+        <!-- Match winner -->
+        <section class="card glass">
+          <h2 class="card-title">Match winner</h2>
+          <div class="prob-grid">
+            <div class="prob-card">
+              <div class="prob-label">Player A</div>
+              <div class="prob-val" id="snookerMatchProbA">–</div>
+              <div class="odds-odd" id="snookerMatchOddsA">–</div>
+            </div>
+            <div class="prob-card">
+              <div class="prob-label">Player B</div>
+              <div class="prob-val" id="snookerMatchProbB">–</div>
+              <div class="odds-odd" id="snookerMatchOddsB">–</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Totals + handicap -->
+        <section class="card glass">
+          <h2 class="card-title">Frames markets</h2>
+
+          <div class="details-grid" style="margin-bottom:10px;">
+            <div class="detail-row">
+              <span>O/U main line</span>
+              <span class="detail-val" id="snookerOuLineLabel">–</span>
+            </div>
+            <div class="detail-row">
+              <span>Over</span>
+              <span class="detail-val">
+                <span id="snookerPOv">–</span> ·
+                <span id="snookerOddsOver">–</span>
+              </span>
+            </div>
+            <div class="detail-row">
+              <span>Under</span>
+              <span class="detail-val">
+                <span id="snookerPUnder">–</span> ·
+                <span id="snookerOddsUnder">–</span>
+              </span>
+            </div>
+          </div>
+
+          <hr style="border:none;border-top:1px solid rgba(148,163,184,0.3);margin:10px 0;">
+
+          <div class="details-grid">
+            <div class="detail-row">
+              <span>Handicap line</span>
+              <span class="detail-val" id="snookerHcapLabel">Player A -1.5</span>
+            </div>
+            <div class="detail-row">
+              <span>Player A -1.5</span>
+              <span class="detail-val">
+                <span id="snookerPHcapA">–</span> ·
+                <span id="snookerOddsHcapA">–</span>
+              </span>
+            </div>
+            <div class="detail-row">
+              <span>Player B +1.5</span>
+              <span class="detail-val">
+                <span id="snookerPHcapB">–</span> ·
+                <span id="snookerOddsHcapB">–</span>
+              </span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN: model details + distribution -->
+      <section class="card glass">
+        <h2 class="card-title">Model details</h2>
+
+        <div class="details-grid">
+          <div class="detail-row">
+            <span>P(A wins frame)</span>
+            <span id="detailFrameProbA" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>P(B wins frame)</span>
+            <span id="detailFrameProbB" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>Best of</span>
+            <span id="detailBestOf" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>First-to</span>
+            <span id="detailFirstTo" class="detail-val">–</span>
+          </div>
+          <div class="detail-row">
+            <span>Expected frames</span>
+            <span id="detailExpectedFrames" class="detail-val">–</span>
+          </div>
+        </div>
+
+        <p class="footnote">
+          Match and frames distribution are computed from a frame-level Bernoulli model
+          (Player A frame win probability) with exact binomial / first-to-K logic.
+        </p>
+
+        <h3 class="card-title" style="margin-top:14px;font-size:1rem;">Frames distribution</h3>
+        <div id="framesDistContainer" style="font-size:0.8rem;color:#cbd5f5;max-height:180px;overflow:auto;">
+          <!-- Filled by JS -->
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <small>
+        Pure probability model, no in-play dynamics. Add momentum / pressure factors later if needed.
+      </small>
+    </footer>
+  </main>
+
+  <script src="snooker_math.js"></script>
+  <script src="snooker.js"></script>
+</body>
+</html>

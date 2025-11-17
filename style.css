@@ -1,0 +1,410 @@
+/* --------------------------------------------------
+   GLOBAL RESET & BASE
+-------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-dark: #020617;
+  --bg-card: rgba(15, 23, 42, 0.7);
+  --border-subtle: rgba(148, 163, 184, 0.4);
+  --accent: #6366f1;
+  --accent-soft: rgba(99, 102, 241, 0.25);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
+  --radius-lg: 18px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  color: var(--text-main);
+  background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #020617 100%);
+}
+
+/* --------------------------------------------------
+   BACKGROUND LAYERS
+-------------------------------------------------- */
+
+.page-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top left, #1d4ed8 0, transparent 55%),
+              radial-gradient(circle at bottom right, #4c1d95 0, transparent 55%);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.page-gradient {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.98));
+  mix-blend-mode: soft-light;
+  z-index: -1;
+}
+
+/* --------------------------------------------------
+   PAGE SHELL
+-------------------------------------------------- */
+
+.shell {
+  max-width: 1120px;
+  margin: 32px auto 40px;
+  padding: 0 16px;
+}
+
+/* --------------------------------------------------
+   HEADER
+-------------------------------------------------- */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+
+.header h1 {
+  margin: 0 0 4px;
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+}
+
+.header p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------
+   CARDS (GLASS DESIGN)
+-------------------------------------------------- */
+
+.card {
+  border-radius: var(--radius-lg);
+  padding: 18px 20px 16px;
+  margin-bottom: 16px;
+}
+
+.glass {
+  background: var(--bg-card);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(24px);
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------
+   CONTROLS GRID
+-------------------------------------------------- */
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr)) minmax(0, 1.6fr);
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* -------------------- Select -------------------- */
+
+select {
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--text-main);
+  outline: none;
+  font-size: 0.92rem;
+
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+                    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 12px, calc(100% - 10px) 12px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4);
+}
+
+/* -------------------- Range Slider -------------------- */
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(30, 64, 175, 0.4);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #020617;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #020617;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  cursor: pointer;
+}
+
+/* Hints */
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------
+   ACTIONS (BUTTON + STATUS)
+-------------------------------------------------- */
+
+.actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 10px;
+}
+
+button {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #f9fafb;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.55);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.12s ease;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(79, 70, 229, 0.7);
+}
+
+.status-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------
+   MAIN TWO-COLUMN LAYOUT
+-------------------------------------------------- */
+
+.layout-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+/* Left column stacking */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --------------------------------------------------
+   PROBABILITY CARDS
+-------------------------------------------------- */
+
+.prob-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.prob-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: radial-gradient(circle at top left,
+    rgba(99, 102, 241, 0.22),
+    rgba(15, 23, 42, 0.85)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  text-align: center;
+}
+
+.prob-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.prob-val {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* --------------------------------------------------
+   ODDS CARDS
+-------------------------------------------------- */
+
+.odds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.odds-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: radial-gradient(circle at top left,
+    rgba(79, 70, 229, 0.22),
+    rgba(15, 23, 42, 0.9)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  text-align: center;
+}
+
+.odds-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.odds-odd {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+}
+
+/* --------------------------------------------------
+   MODEL DETAILS PANEL
+-------------------------------------------------- */
+
+.details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  font-size: 0.86rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.detail-val {
+  color: var(--text-main);
+}
+
+.footnote {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------
+   FOOTER
+-------------------------------------------------- */
+
+.footer {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.75rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.9);
+}
+
+/* --------------------------------------------------
+   RESPONSIVE DESIGN
+-------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .layout-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .prob-val,
+  .odds-odd {
+    font-size: 1.15rem;
+  }
+}
+
+.top-nav a {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.top-nav a:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}

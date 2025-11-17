@@ -1,0 +1,1477 @@
+{
+  "Albania - Abissnet Superiore": {
+    "avgHome": 1.07,
+    "avgAway": 0.85,
+    "drawRate": 0.27
+  },
+  "Andorra - Primera Divisio": {
+    "avgHome": 1.37,
+    "avgAway": 1.11,
+    "drawRate": 0.26
+  },
+  "Argentina - Liga Profesional - Apertura": {
+    "avgHome": 1.18,
+    "avgAway": 0.81,
+    "drawRate": 0.31
+  },
+  "Argentina - Liga Profesional - Clausura": {
+    "avgHome": 1.06,
+    "avgAway": 0.87,
+    "drawRate": 0.33
+  },
+  "Argentina - Primera B - Apertura": {
+    "avgHome": 1.16,
+    "avgAway": 0.82,
+    "drawRate": 0.34
+  },
+  "Argentina - Primera B - Clausura": {
+    "avgHome": 1.19,
+    "avgAway": 0.95,
+    "drawRate": 0.34
+  },
+  "Armenia - Premier League": {
+    "avgHome": 1.55,
+    "avgAway": 1.0,
+    "drawRate": 0.24
+  },
+  "Australia - A-League": {
+    "avgHome": 1.58,
+    "avgAway": 1.0,
+    "drawRate": 0.25
+  },
+  "Australia - A-League Women": {
+    "avgHome": 1.6,
+    "avgAway": 1.33,
+    "drawRate": 0.27
+  },
+  "Australia - NPL Victoria": {
+    "avgHome": 1.81,
+    "avgAway": 1.49,
+    "drawRate": 0.21
+  },
+  "Australia - NPL Western Australia": {
+    "avgHome": 1.68,
+    "avgAway": 1.71,
+    "drawRate": 0.21
+  },
+  "Australia - NPL South Australia": {
+    "avgHome": 1.8,
+    "avgAway": 1.62,
+    "drawRate": 0.14
+  },
+  "Australia - NPL Tasmania": {
+    "avgHome": 2.27,
+    "avgAway": 2.36,
+    "drawRate": 0.11
+  },
+  "Australia - NPL New South Wales": {
+    "avgHome": 1.56,
+    "avgAway": 1.42,
+    "drawRate": 0.23
+  },
+  "Austria - Bundesliga": {
+    "avgHome": 1.35,
+    "avgAway": 1.34,
+    "drawRate": 0.23
+  },
+  "Austria - 2. Liga": {
+    "avgHome": 1.46,
+    "avgAway": 1.38,
+    "drawRate": 0.3
+  },
+  "Austria - Regionalliga West": {
+    "avgHome": 1.78,
+    "avgAway": 1.48,
+    "drawRate": 0.19
+  },
+  "Austria - Regionalliga Mitte": {
+    "avgHome": 2.0,
+    "avgAway": 1.74,
+    "drawRate": 0.24
+  },
+  "Austria - Regionalliga Ost": {
+    "avgHome": 1.74,
+    "avgAway": 1.14,
+    "drawRate": 0.24
+  },
+  "Austria - Bundesliga Women": {
+    "avgHome": 1.51,
+    "avgAway": 1.92,
+    "drawRate": 0.14
+  },
+  "Azerbaijan - Premier League": {
+    "avgHome": 1.28,
+    "avgAway": 1.2,
+    "drawRate": 0.26
+  },
+  "Azerbaijan - First Division": {
+    "avgHome": 1.74,
+    "avgAway": 1.26,
+    "drawRate": 0.2
+  },
+  "Bahrain - Premier League": {
+    "avgHome": 1.37,
+    "avgAway": 1.1,
+    "drawRate": 0.32
+  },
+  "Bangladesh - Premier League": {
+    "avgHome": 0.9,
+    "avgAway": 1.1,
+    "drawRate": 0.4
+  },
+  "Belarus - Vysshaya Liga": {
+    "avgHome": 1.37,
+    "avgAway": 1.16,
+    "drawRate": 0.22
+  },
+  "Belgium - Pro League": {
+    "avgHome": 1.47,
+    "avgAway": 1.09,
+    "drawRate": 0.28
+  },
+  "Belgium - Challenger Pro League": {
+    "avgHome": 1.29,
+    "avgAway": 1.41,
+    "drawRate": 0.27
+  },
+  "Belgium - U21 Pro League": {
+    "avgHome": 2.05,
+    "avgAway": 1.82,
+    "drawRate": 0.12
+  },
+  "Bolivia - Division Profesional": {
+    "avgHome": 2.13,
+    "avgAway": 1.33,
+    "drawRate": 0.22
+  },
+  "Bosnia and Herzegovina - Premier Liga": {
+    "avgHome": 1.43,
+    "avgAway": 0.81,
+    "drawRate": 0.25
+  },
+  "Bosnia and Herzegovina - Prva Liga - FBiH": {
+    "avgHome": 1.58,
+    "avgAway": 0.99,
+    "drawRate": 0.23
+  },
+  "Brazil - Serie A": {
+    "avgHome": 1.46,
+    "avgAway": 0.98,
+    "drawRate": 0.26
+  },
+  "Brazil - Serie B": {
+    "avgHome": 1.28,
+    "avgAway": 0.93,
+    "drawRate": 0.31
+  },
+  "Brazil - Serie C": {
+    "avgHome": 1.17,
+    "avgAway": 0.89,
+    "drawRate": 0.32
+  },
+  "Brazil - Serie D": {
+    "avgHome": 1.39,
+    "avgAway": 0.92,
+    "drawRate": 0.27
+  },
+  "Brazil - Brasileiro Women": {
+    "avgHome": 1.78,
+    "avgAway": 1.33,
+    "drawRate": 0.26
+  },
+  "Brazil - Carioca": {
+    "avgHome": 1.2,
+    "avgAway": 0.98,
+    "drawRate": 0.32
+  },
+  "Brazil - Mineiro": {
+    "avgHome": 1.21,
+    "avgAway": 0.98,
+    "drawRate": 0.29
+  },
+  "Brazil - Goiano": {
+    "avgHome": 1.09,
+    "avgAway": 0.8,
+    "drawRate": 0.26
+  },
+  "Brazil - Pernambucano": {
+    "avgHome": 1.49,
+    "avgAway": 0.84,
+    "drawRate": 0.31
+  },
+  "Brazil - Brasiliense": {
+    "avgHome": 1.27,
+    "avgAway": 0.93,
+    "drawRate": 0.18
+  },
+  "Brazil - Matogrossense": {
+    "avgHome": 1.5,
+    "avgAway": 0.89,
+    "drawRate": 0.33
+  },
+  "Brazil - Paulista A1": {
+    "avgHome": 1.4,
+    "avgAway": 1.09,
+    "drawRate": 0.34
+  },
+  "Brazil - Paulista A2": {
+    "avgHome": 1.23,
+    "avgAway": 0.96,
+    "drawRate": 0.34
+  },
+  "Brazil - Paulista A3": {
+    "avgHome": 1.28,
+    "avgAway": 0.85,
+    "drawRate": 0.32
+  },
+  "Brazil - Parabaino": {
+    "avgHome": 1.78,
+    "avgAway": 1.24,
+    "drawRate": 0.24
+  },
+  "Brazil - Catarinense": {
+    "avgHome": 1.32,
+    "avgAway": 0.86,
+    "drawRate": 0.38
+  },
+  "Brazil - Sergipano": {
+    "avgHome": 1.78,
+    "avgAway": 1.09,
+    "drawRate": 0.22
+  },
+  "Brazil - Gaucho": {
+    "avgHome": 1.29,
+    "avgAway": 0.85,
+    "drawRate": 0.33
+  },
+  "Brazil - Tocantinense": {
+    "avgHome": 1.29,
+    "avgAway": 1.25,
+    "drawRate": 0.21
+  },
+  "Bulgaria - Parva Liga": {
+    "avgHome": 1.32,
+    "avgAway": 1.08,
+    "drawRate": 0.31
+  },
+  "Bulgaria - Vtora Liga": {
+    "avgHome": 1.41,
+    "avgAway": 1.01,
+    "drawRate": 0.27
+  },
+  "Canada - Premier League": {
+    "avgHome": 1.71,
+    "avgAway": 1.29,
+    "drawRate": 0.29
+  },
+  "Chile - Liga de Primera": {
+    "avgHome": 1.55,
+    "avgAway": 1.1,
+    "drawRate": 0.22
+  },
+  "Chile - Liga de Ascenso": {
+    "avgHome": 1.38,
+    "avgAway": 0.96,
+    "drawRate": 0.3
+  },
+  "China - Super League": {
+    "avgHome": 1.81,
+    "avgAway": 1.4,
+    "drawRate": 0.25
+  },
+  "China - League One": {
+    "avgHome": 1.49,
+    "avgAway": 1.11,
+    "drawRate": 0.26
+  },
+  "China - League Two": {
+    "avgHome": 1.23,
+    "avgAway": 1.03,
+    "drawRate": 0.28
+  },
+  "Colombia - Primera A - Apertura": {
+    "avgHome": 1.31,
+    "avgAway": 0.88,
+    "drawRate": 0.29
+  },
+  "Colombia - Primera A - Clausura": {
+    "avgHome": 1.43,
+    "avgAway": 1.07,
+    "drawRate": 0.27
+  },
+  "Colombia - Primera B - Apertura": {
+    "avgHome": 1.43,
+    "avgAway": 0.98,
+    "drawRate": 0.27
+  },
+  "Costa Rica - Primera Div. - Apertura": {
+    "avgHome": 1.32,
+    "avgAway": 1.11,
+    "drawRate": 0.31
+  },
+  "Costa Rica - Primera Div. - Clausura": {
+    "avgHome": 1.25,
+    "avgAway": 1.0,
+    "drawRate": 0.3
+  },
+  "Croatia - 1. HNL": {
+    "avgHome": 1.45,
+    "avgAway": 1.11,
+    "drawRate": 0.28
+  },
+  "Croatia - 1. NL": {
+    "avgHome": 1.22,
+    "avgAway": 0.85,
+    "drawRate": 0.32
+  },
+  "Cyprus - Cyprus League": {
+    "avgHome": 1.46,
+    "avgAway": 1.11,
+    "drawRate": 0.21
+  },
+  "Cyprus - Division 2": {
+    "avgHome": 1.3,
+    "avgAway": 1.27,
+    "drawRate": 0.22
+  },
+  "Czech Republic - 1. Liga": {
+    "avgHome": 1.28,
+    "avgAway": 1.24,
+    "drawRate": 0.31
+  },
+  "Czech Republic - FNL": {
+    "avgHome": 1.62,
+    "avgAway": 1.24,
+    "drawRate": 0.2
+  },
+  "Czech Republic - U19 League": {
+    "avgHome": 2.02,
+    "avgAway": 1.53,
+    "drawRate": 0.13
+  },
+  "Czech Republic - 1. Liga Women": {
+    "avgHome": 2.75,
+    "avgAway": 1.48,
+    "drawRate": 0.1
+  },
+  "Denmark - Superligaen": {
+    "avgHome": 1.66,
+    "avgAway": 1.54,
+    "drawRate": 0.19
+  },
+  "Denmark - 1st Division": {
+    "avgHome": 1.51,
+    "avgAway": 1.3,
+    "drawRate": 0.28
+  },
+  "Denmark - 2nd Division": {
+    "avgHome": 1.61,
+    "avgAway": 1.27,
+    "drawRate": 0.22
+  },
+  "Ecuador - Liga Pro": {
+    "avgHome": 1.41,
+    "avgAway": 1.17,
+    "drawRate": 0.28
+  },
+  "Egypt - Premier League": {
+    "avgHome": 0.94,
+    "avgAway": 0.92,
+    "drawRate": 0.39
+  },
+  "England - Premier League": {
+    "avgHome": 1.64,
+    "avgAway": 1.1,
+    "drawRate": 0.22
+  },
+  "England - Championship": {
+    "avgHome": 1.28,
+    "avgAway": 1.21,
+    "drawRate": 0.28
+  },
+  "England - League One": {
+    "avgHome": 1.45,
+    "avgAway": 1.01,
+    "drawRate": 0.22
+  },
+  "England - League Two": {
+    "avgHome": 1.42,
+    "avgAway": 1.2,
+    "drawRate": 0.26
+  },
+  "England - National League": {
+    "avgHome": 1.52,
+    "avgAway": 1.24,
+    "drawRate": 0.25
+  },
+  "England - National L. North": {
+    "avgHome": 1.58,
+    "avgAway": 1.42,
+    "drawRate": 0.23
+  },
+  "England - National L. South": {
+    "avgHome": 1.39,
+    "avgAway": 1.15,
+    "drawRate": 0.27
+  },
+  "England - Isthmian league": {
+    "avgHome": 1.68,
+    "avgAway": 1.56,
+    "drawRate": 0.29
+  },
+  "England - Northern league": {
+    "avgHome": 1.52,
+    "avgAway": 1.14,
+    "drawRate": 0.25
+  },
+  "England - Southern Central": {
+    "avgHome": 1.52,
+    "avgAway": 1.41,
+    "drawRate": 0.25
+  },
+  "England - Southern South": {
+    "avgHome": 1.75,
+    "avgAway": 1.43,
+    "drawRate": 0.26
+  },
+  "England - Premier League 2": {
+    "avgHome": 1.86,
+    "avgAway": 1.8,
+    "drawRate": 0.21
+  },
+  "England - Women Super League": {
+    "avgHome": 1.42,
+    "avgAway": 1.45,
+    "drawRate": 0.23
+  },
+  "England - WSL 2": {
+    "avgHome": 1.67,
+    "avgAway": 1.59,
+    "drawRate": 0.24
+  },
+  "England - Professional Development League": {
+    "avgHome": 2.12,
+    "avgAway": 1.7,
+    "drawRate": 0.21
+  },
+  "Estonia - Meistriliiga": {
+    "avgHome": 1.74,
+    "avgAway": 1.44,
+    "drawRate": 0.13
+  },
+  "FaroeIslands - Premier League": {
+    "avgHome": 1.81,
+    "avgAway": 1.82,
+    "drawRate": 0.2
+  },
+  "FaroeIslands - 1. Deild": {
+    "avgHome": 1.99,
+    "avgAway": 1.71,
+    "drawRate": 0.11
+  },
+  "Finland - Veikkausliiga": {
+    "avgHome": 1.66,
+    "avgAway": 1.63,
+    "drawRate": 0.23
+  },
+  "Finland - Ykkosliga": {
+    "avgHome": 1.74,
+    "avgAway": 1.54,
+    "drawRate": 0.26
+  },
+  "Finland - Ykkonen": {
+    "avgHome": 2.02,
+    "avgAway": 1.46,
+    "drawRate": 0.19
+  },
+  "Finland - Kakkonen Group A": {
+    "avgHome": 2.43,
+    "avgAway": 1.89,
+    "drawRate": 0.12
+  },
+  "Finland - Kakkonen Group B": {
+    "avgHome": 2.12,
+    "avgAway": 1.72,
+    "drawRate": 0.17
+  },
+  "Finland - Kakkonen Group C": {
+    "avgHome": 2.56,
+    "avgAway": 1.88,
+    "drawRate": 0.1
+  },
+  "Finland - Kansallinen Liiga Women": {
+    "avgHome": 1.82,
+    "avgAway": 1.7,
+    "drawRate": 0.16
+  },
+  "France - Ligue 1": {
+    "avgHome": 1.75,
+    "avgAway": 1.17,
+    "drawRate": 0.23
+  },
+  "France - Ligue 2": {
+    "avgHome": 1.34,
+    "avgAway": 1.23,
+    "drawRate": 0.3
+  },
+  "France - National": {
+    "avgHome": 1.32,
+    "avgAway": 1.04,
+    "drawRate": 0.33
+  },
+  "France - Premiere Ligue Women": {
+    "avgHome": 1.95,
+    "avgAway": 1.51,
+    "drawRate": 0.17
+  },
+  "Georgia - Erovnuli Liga": {
+    "avgHome": 1.36,
+    "avgAway": 1.19,
+    "drawRate": 0.24
+  },
+  "Georgia - Erovnuli Liga 2": {
+    "avgHome": 1.31,
+    "avgAway": 1.11,
+    "drawRate": 0.35
+  },
+  "Georgia - Liga 3": {
+    "avgHome": 1.78,
+    "avgAway": 1.37,
+    "drawRate": 0.23
+  },
+  "Germany - Bundesliga": {
+    "avgHome": 1.72,
+    "avgAway": 1.49,
+    "drawRate": 0.2
+  },
+  "Germany - 2. Bundesliga": {
+    "avgHome": 1.47,
+    "avgAway": 1.34,
+    "drawRate": 0.18
+  },
+  "Germany - 3. Liga": {
+    "avgHome": 1.67,
+    "avgAway": 1.48,
+    "drawRate": 0.24
+  },
+  "Germany - Regionalliga Nord": {
+    "avgHome": 2.01,
+    "avgAway": 1.73,
+    "drawRate": 0.18
+  },
+  "Germany - Regionalliga Nordost": {
+    "avgHome": 1.53,
+    "avgAway": 1.25,
+    "drawRate": 0.24
+  },
+  "Germany - Regionalliga West": {
+    "avgHome": 1.69,
+    "avgAway": 1.51,
+    "drawRate": 0.28
+  },
+  "Germany - Regionalliga Sudwest": {
+    "avgHome": 1.94,
+    "avgAway": 1.61,
+    "drawRate": 0.27
+  },
+  "Germany - Regionalliga Bayern": {
+    "avgHome": 1.63,
+    "avgAway": 1.55,
+    "drawRate": 0.25
+  },
+  "Germany - Oberliga Baden-W.": {
+    "avgHome": 1.75,
+    "avgAway": 1.59,
+    "drawRate": 0.24
+  },
+  "Germany - Oberliga Hamburg": {
+    "avgHome": 2.43,
+    "avgAway": 2.22,
+    "drawRate": 0.16
+  },
+  "Germany - Oberliga Niederrhein": {
+    "avgHome": 2.0,
+    "avgAway": 1.48,
+    "drawRate": 0.21
+  },
+  "Germany - Oberliga Westfalen": {
+    "avgHome": 1.7,
+    "avgAway": 1.55,
+    "drawRate": 0.26
+  },
+  "Germany - Oberliga Hessen": {
+    "avgHome": 2.03,
+    "avgAway": 1.67,
+    "drawRate": 0.21
+  },
+  "Germany - Oberliga Bremen": {
+    "avgHome": 2.39,
+    "avgAway": 1.79,
+    "drawRate": 0.17
+  },
+  "Germany - Oberliga Niedersachsen": {
+    "avgHome": 1.91,
+    "avgAway": 1.73,
+    "drawRate": 0.2
+  },
+  "Germany - Oberliga Schleswig H.": {
+    "avgHome": 1.98,
+    "avgAway": 1.82,
+    "drawRate": 0.14
+  },
+  "Germany - Oberliga Mittelrhein": {
+    "avgHome": 1.92,
+    "avgAway": 1.76,
+    "drawRate": 0.21
+  },
+  "Germany - Oberliga Rheinland-P/S": {
+    "avgHome": 2.07,
+    "avgAway": 1.7,
+    "drawRate": 0.18
+  },
+  "Germany - Oberliga Bayern Nord": {
+    "avgHome": 1.88,
+    "avgAway": 1.35,
+    "drawRate": 0.22
+  },
+  "Germany - Oberliga Bayern Süd": {
+    "avgHome": 1.73,
+    "avgAway": 1.43,
+    "drawRate": 0.23
+  },
+  "Germany - Bundesliga Women": {
+    "avgHome": 1.87,
+    "avgAway": 1.69,
+    "drawRate": 0.16
+  },
+  "Germany - 2. Bundesliga Women": {
+    "avgHome": 2.01,
+    "avgAway": 1.49,
+    "drawRate": 0.26
+  },
+  "Gibraltar - Premier Division": {
+    "avgHome": 1.72,
+    "avgAway": 1.93,
+    "drawRate": 0.11
+  },
+  "Greece - Super League": {
+    "avgHome": 1.52,
+    "avgAway": 1.25,
+    "drawRate": 0.23
+  },
+  "Guatemala - Liga Nacional - Apertura": {
+    "avgHome": 1.5,
+    "avgAway": 0.91,
+    "drawRate": 0.21
+  },
+  "Guatemala - Liga Nacional - Clausura": {
+    "avgHome": 1.51,
+    "avgAway": 0.91,
+    "drawRate": 0.25
+  },
+  "Hong Kong - Premier League": {
+    "avgHome": 1.9,
+    "avgAway": 1.72,
+    "drawRate": 0.18
+  },
+  "Hungary - NB I": {
+    "avgHome": 1.67,
+    "avgAway": 1.55,
+    "drawRate": 0.3
+  },
+  "Hungary - NB II": {
+    "avgHome": 1.47,
+    "avgAway": 1.13,
+    "drawRate": 0.26
+  },
+  "Hungary - NB I - Women": {
+    "avgHome": 2.03,
+    "avgAway": 1.69,
+    "drawRate": 0.11
+  },
+  "Iceland - Besta deild": {
+    "avgHome": 1.91,
+    "avgAway": 1.32,
+    "drawRate": 0.22
+  },
+  "Iceland - 1. Deild": {
+    "avgHome": 1.81,
+    "avgAway": 1.75,
+    "drawRate": 0.2
+  },
+  "Iceland - 2. Deild": {
+    "avgHome": 1.91,
+    "avgAway": 1.67,
+    "drawRate": 0.17
+  },
+  "Iceland - Besta deild Women": {
+    "avgHome": 2.1,
+    "avgAway": 1.73,
+    "drawRate": 0.11
+  },
+  "India - Super League": {
+    "avgHome": 1.49,
+    "avgAway": 1.38,
+    "drawRate": 0.24
+  },
+  "India - I-League": {
+    "avgHome": 1.83,
+    "avgAway": 1.34,
+    "drawRate": 0.27
+  },
+  "Indonesia - Liga 1": {
+    "avgHome": 1.34,
+    "avgAway": 1.19,
+    "drawRate": 0.25
+  },
+  "Iran - Pro League": {
+    "avgHome": 1.0,
+    "avgAway": 0.87,
+    "drawRate": 0.42
+  },
+  "Ireland - Premier Division": {
+    "avgHome": 1.38,
+    "avgAway": 1.05,
+    "drawRate": 0.29
+  },
+  "Ireland - First Division": {
+    "avgHome": 1.56,
+    "avgAway": 1.25,
+    "drawRate": 0.23
+  },
+  "Ireland - Women National League": {
+    "avgHome": 1.8,
+    "avgAway": 1.73,
+    "drawRate": 0.12
+  },
+  "Israel - Ligat HaAl": {
+    "avgHome": 1.64,
+    "avgAway": 1.56,
+    "drawRate": 0.26
+  },
+  "Italy - Serie A": {
+    "avgHome": 1.22,
+    "avgAway": 1.0,
+    "drawRate": 0.35
+  },
+  "Italy - Serie B": {
+    "avgHome": 1.46,
+    "avgAway": 1.06,
+    "drawRate": 0.36
+  },
+  "Italy - Serie C - Group A": {
+    "avgHome": 1.25,
+    "avgAway": 1.04,
+    "drawRate": 0.33
+  },
+  "Italy - Serie C - Group B": {
+    "avgHome": 1.15,
+    "avgAway": 1.1,
+    "drawRate": 0.27
+  },
+  "Italy - Serie C - Group C": {
+    "avgHome": 1.51,
+    "avgAway": 1.11,
+    "drawRate": 0.27
+  },
+  "Italy - Serie D - Group A": {
+    "avgHome": 1.27,
+    "avgAway": 1.14,
+    "drawRate": 0.23
+  },
+  "Italy - Serie D - Group B": {
+    "avgHome": 1.21,
+    "avgAway": 1.3,
+    "drawRate": 0.35
+  },
+  "Italy - Serie D - Group C": {
+    "avgHome": 1.24,
+    "avgAway": 1.14,
+    "drawRate": 0.3
+  },
+  "Italy - Serie D - Group D": {
+    "avgHome": 1.18,
+    "avgAway": 1.02,
+    "drawRate": 0.31
+  },
+  "Italy - Serie D - Group E": {
+    "avgHome": 1.36,
+    "avgAway": 0.94,
+    "drawRate": 0.22
+  },
+  "Italy - Serie D - Group F": {
+    "avgHome": 1.39,
+    "avgAway": 1.32,
+    "drawRate": 0.25
+  },
+  "Italy - Serie D - Group G": {
+    "avgHome": 1.34,
+    "avgAway": 1.31,
+    "drawRate": 0.28
+  },
+  "Italy - Serie D - Group H": {
+    "avgHome": 1.36,
+    "avgAway": 0.94,
+    "drawRate": 0.29
+  },
+  "Italy - Serie D - Group I": {
+    "avgHome": 1.37,
+    "avgAway": 1.0,
+    "drawRate": 0.3
+  },
+  "Italy - Primavera 1": {
+    "avgHome": 1.4,
+    "avgAway": 1.14,
+    "drawRate": 0.25
+  },
+  "Italy - Serie A Women": {
+    "avgHome": 1.72,
+    "avgAway": 1.11,
+    "drawRate": 0.17
+  },
+  "Italy - Serie B Women": {
+    "avgHome": 1.65,
+    "avgAway": 1.57,
+    "drawRate": 0.13
+  },
+  "Jamaica - Premier League": {
+    "avgHome": 1.34,
+    "avgAway": 1.23,
+    "drawRate": 0.29
+  },
+  "Japan - J1 League": {
+    "avgHome": 1.31,
+    "avgAway": 1.09,
+    "drawRate": 0.26
+  },
+  "Japan - J2 League": {
+    "avgHome": 1.28,
+    "avgAway": 1.19,
+    "drawRate": 0.28
+  },
+  "Japan - J3 League": {
+    "avgHome": 1.4,
+    "avgAway": 1.13,
+    "drawRate": 0.23
+  },
+  "Japan - WE League": {
+    "avgHome": 1.51,
+    "avgAway": 1.14,
+    "drawRate": 0.23
+  },
+  "Japan - Nadeshiko League 1": {
+    "avgHome": 1.41,
+    "avgAway": 1.15,
+    "drawRate": 0.3
+  },
+  "Jordan - Premier League": {
+    "avgHome": 1.27,
+    "avgAway": 1.33,
+    "drawRate": 0.2
+  },
+  "Kazakhstan - Premier League": {
+    "avgHome": 1.52,
+    "avgAway": 1.2,
+    "drawRate": 0.28
+  },
+  "Kuwait - Premier League": {
+    "avgHome": 1.05,
+    "avgAway": 1.15,
+    "drawRate": 0.28
+  },
+  "Latvia - Virsliga": {
+    "avgHome": 1.68,
+    "avgAway": 1.29,
+    "drawRate": 0.23
+  },
+  "Latvia - 1. Liga": {
+    "avgHome": 1.85,
+    "avgAway": 1.47,
+    "drawRate": 0.21
+  },
+  "Lithuania - A Lyga": {
+    "avgHome": 1.43,
+    "avgAway": 1.23,
+    "drawRate": 0.24
+  },
+  "Lithuania - 1st League": {
+    "avgHome": 1.48,
+    "avgAway": 1.56,
+    "drawRate": 0.17
+  },
+  "Malaysia - Super League": {
+    "avgHome": 1.87,
+    "avgAway": 1.48,
+    "drawRate": 0.27
+  },
+  "Mexico - Liga MX - Apertura": {
+    "avgHome": 1.78,
+    "avgAway": 1.32,
+    "drawRate": 0.25
+  },
+  "Mexico - Liga MX - Clausura": {
+    "avgHome": 1.56,
+    "avgAway": 1.3,
+    "drawRate": 0.2
+  },
+  "Moldova - Divizia Nationala": {
+    "avgHome": 1.63,
+    "avgAway": 1.51,
+    "drawRate": 0.17
+  },
+  "Montenegro - First League": {
+    "avgHome": 1.55,
+    "avgAway": 1.03,
+    "drawRate": 0.31
+  },
+  "Morocco - Botola Pro": {
+    "avgHome": 1.11,
+    "avgAway": 1.03,
+    "drawRate": 0.34
+  },
+  "Netherlands - Eredivisie": {
+    "avgHome": 1.86,
+    "avgAway": 1.5,
+    "drawRate": 0.2
+  },
+  "Netherlands - Eerste Divisie": {
+    "avgHome": 1.78,
+    "avgAway": 1.47,
+    "drawRate": 0.22
+  },
+  "Netherlands - Tweede Divisie": {
+    "avgHome": 1.81,
+    "avgAway": 1.51,
+    "drawRate": 0.19
+  },
+  "Netherlands - Derde Divisie Gr. A": {
+    "avgHome": 1.94,
+    "avgAway": 1.48,
+    "drawRate": 0.16
+  },
+  "Netherlands - Derde Divisie Gr. B": {
+    "avgHome": 1.7,
+    "avgAway": 1.52,
+    "drawRate": 0.19
+  },
+  "Netherlands - Eredivisie Women": {
+    "avgHome": 1.71,
+    "avgAway": 1.79,
+    "drawRate": 0.14
+  },
+  "Northern Ireland - NIFL Premiership": {
+    "avgHome": 1.46,
+    "avgAway": 1.25,
+    "drawRate": 0.12
+  },
+  "Northern Ireland - NIFL Championship": {
+    "avgHome": 1.47,
+    "avgAway": 1.33,
+    "drawRate": 0.27
+  },
+  "North Macedonia - First League": {
+    "avgHome": 1.79,
+    "avgAway": 1.34,
+    "drawRate": 0.19
+  },
+  "Norway - Eliteserien": {
+    "avgHome": 1.76,
+    "avgAway": 1.37,
+    "drawRate": 0.2
+  },
+  "Norway - 1st Division": {
+    "avgHome": 1.66,
+    "avgAway": 1.54,
+    "drawRate": 0.26
+  },
+  "Norway - Division 2 - Gr. 1": {
+    "avgHome": 1.99,
+    "avgAway": 1.38,
+    "drawRate": 0.3
+  },
+  "Norway - Division 2 - Gr. 2": {
+    "avgHome": 2.08,
+    "avgAway": 1.62,
+    "drawRate": 0.14
+  },
+  "Norway - Division 3 - Gr. 1": {
+    "avgHome": 2.57,
+    "avgAway": 1.98,
+    "drawRate": 0.16
+  },
+  "Norway - Division 3 - Gr. 2": {
+    "avgHome": 2.34,
+    "avgAway": 1.71,
+    "drawRate": 0.2
+  },
+  "Norway - Division 3 - Gr. 3": {
+    "avgHome": 2.49,
+    "avgAway": 1.78,
+    "drawRate": 0.1
+  },
+  "Norway - Division 3 - Gr. 4": {
+    "avgHome": 2.6,
+    "avgAway": 1.98,
+    "drawRate": 0.13
+  },
+  "Norway - Division 3 - Gr. 5": {
+    "avgHome": 2.52,
+    "avgAway": 1.86,
+    "drawRate": 0.12
+  },
+  "Norway - Division 3 - Gr. 6": {
+    "avgHome": 2.25,
+    "avgAway": 1.77,
+    "drawRate": 0.16
+  },
+  "Norway - Toppserien Women": {
+    "avgHome": 1.81,
+    "avgAway": 1.39,
+    "drawRate": 0.14
+  },
+  "Norway - 1. Division Women": {
+    "avgHome": 1.81,
+    "avgAway": 1.4,
+    "drawRate": 0.22
+  },
+  "Paraguay - Primera Div. - Apertura": {
+    "avgHome": 1.06,
+    "avgAway": 1.12,
+    "drawRate": 0.36
+  },
+  "Paraguay - Primera Div. - Clausura": {
+    "avgHome": 1.4,
+    "avgAway": 1.21,
+    "drawRate": 0.28
+  },
+  "Paraguay - Division Intermedia": {
+    "avgHome": 1.3,
+    "avgAway": 0.92,
+    "drawRate": 0.35
+  },
+  "Peru - Liga 1 - Apertura": {
+    "avgHome": 1.65,
+    "avgAway": 1.06,
+    "drawRate": 0.26
+  },
+  "Peru - Liga 1 - Clausura": {
+    "avgHome": 1.5,
+    "avgAway": 1.02,
+    "drawRate": 0.24
+  },
+  "Philippines - PFL": {
+    "avgHome": 2.95,
+    "avgAway": 1.63,
+    "drawRate": 0.08
+  },
+  "Poland - Ekstraklasa": {
+    "avgHome": 1.71,
+    "avgAway": 1.19,
+    "drawRate": 0.27
+  },
+  "Poland - 1. Liga": {
+    "avgHome": 1.68,
+    "avgAway": 1.4,
+    "drawRate": 0.27
+  },
+  "Poland - 2. Liga": {
+    "avgHome": 1.56,
+    "avgAway": 1.5,
+    "drawRate": 0.32
+  },
+  "Poland - Ekstraliga Women": {
+    "avgHome": 1.73,
+    "avgAway": 1.58,
+    "drawRate": 0.17
+  },
+  "Portugal - Liga Portugal": {
+    "avgHome": 1.36,
+    "avgAway": 1.3,
+    "drawRate": 0.26
+  },
+  "Portugal - Liga Portugal 2": {
+    "avgHome": 1.3,
+    "avgAway": 1.22,
+    "drawRate": 0.31
+  },
+  "Portugal - First Division Women": {
+    "avgHome": 1.3,
+    "avgAway": 1.73,
+    "drawRate": 0.33
+  },
+  "Qatar - Stars League": {
+    "avgHome": 1.76,
+    "avgAway": 1.62,
+    "drawRate": 0.18
+  },
+  "Qatar - Division 2": {
+    "avgHome": 1.55,
+    "avgAway": 1.45,
+    "drawRate": 0.25
+  },
+  "Romania - Liga 1": {
+    "avgHome": 1.41,
+    "avgAway": 1.16,
+    "drawRate": 0.32
+  },
+  "Romania - Liga 2": {
+    "avgHome": 1.57,
+    "avgAway": 1.14,
+    "drawRate": 0.23
+  },
+  "Romania - Superliga Women": {
+    "avgHome": 1.96,
+    "avgAway": 1.52,
+    "drawRate": 0.17
+  },
+  "Russia - Premier League": {
+    "avgHome": 1.41,
+    "avgAway": 1.17,
+    "drawRate": 0.31
+  },
+  "Russia - FNL": {
+    "avgHome": 1.32,
+    "avgAway": 1.02,
+    "drawRate": 0.32
+  },
+  "Rwanda - Premier League": {
+    "avgHome": 0.83,
+    "avgAway": 0.83,
+    "drawRate": 0.37
+  },
+  "SanMarino - Campionato Sammarinese": {
+    "avgHome": 1.31,
+    "avgAway": 1.39,
+    "drawRate": 0.28
+  },
+  "Saudi Arabia - Professional League": {
+    "avgHome": 1.61,
+    "avgAway": 1.56,
+    "drawRate": 0.24
+  },
+  "Saudi Arabia - Division 1": {
+    "avgHome": 1.24,
+    "avgAway": 1.54,
+    "drawRate": 0.27
+  },
+  "Scotland - Premiership": {
+    "avgHome": 1.54,
+    "avgAway": 1.19,
+    "drawRate": 0.36
+  },
+  "Scotland - Championship": {
+    "avgHome": 1.34,
+    "avgAway": 1.2,
+    "drawRate": 0.36
+  },
+  "Scotland - League One": {
+    "avgHome": 1.32,
+    "avgAway": 1.23,
+    "drawRate": 0.2
+  },
+  "Scotland - League Two": {
+    "avgHome": 1.43,
+    "avgAway": 1.49,
+    "drawRate": 0.28
+  },
+  "Scotland - SWPL 1 Women": {
+    "avgHome": 2.07,
+    "avgAway": 1.87,
+    "drawRate": 0.11
+  },
+  "Serbia - Super Liga": {
+    "avgHome": 1.64,
+    "avgAway": 1.21,
+    "drawRate": 0.23
+  },
+  "Serbia - Prva Liga": {
+    "avgHome": 1.41,
+    "avgAway": 0.91,
+    "drawRate": 0.33
+  },
+  "Singapore - Premier League": {
+    "avgHome": 1.42,
+    "avgAway": 2.21,
+    "drawRate": 0.16
+  },
+  "Slovakia - 1. Liga": {
+    "avgHome": 1.56,
+    "avgAway": 1.45,
+    "drawRate": 0.24
+  },
+  "Slovakia - 2. Liga": {
+    "avgHome": 1.78,
+    "avgAway": 1.34,
+    "drawRate": 0.25
+  },
+  "Slovakia - 1.Liga Women": {
+    "avgHome": 1.99,
+    "avgAway": 1.68,
+    "drawRate": 0.13
+  },
+  "Slovenia - Prva Liga": {
+    "avgHome": 1.65,
+    "avgAway": 1.51,
+    "drawRate": 0.23
+  },
+  "South Africa - Premier Division": {
+    "avgHome": 1.19,
+    "avgAway": 0.81,
+    "drawRate": 0.25
+  },
+  "South Africa - First Division": {
+    "avgHome": 1.19,
+    "avgAway": 0.93,
+    "drawRate": 0.31
+  },
+  "South Korea - K League 1": {
+    "avgHome": 1.39,
+    "avgAway": 1.2,
+    "drawRate": 0.26
+  },
+  "South Korea - K League 2": {
+    "avgHome": 1.3,
+    "avgAway": 1.21,
+    "drawRate": 0.29
+  },
+  "South Korea - WK League Women": {
+    "avgHome": 1.4,
+    "avgAway": 1.23,
+    "drawRate": 0.29
+  },
+  "Spain - LaLiga": {
+    "avgHome": 1.49,
+    "avgAway": 1.12,
+    "drawRate": 0.26
+  },
+  "Spain - LaLiga2": {
+    "avgHome": 1.42,
+    "avgAway": 1.13,
+    "drawRate": 0.29
+  },
+  "Spain - Liga F Women": {
+    "avgHome": 1.36,
+    "avgAway": 1.39,
+    "drawRate": 0.3
+  },
+  "Spain - Primera F. Women": {
+    "avgHome": 1.47,
+    "avgAway": 1.0,
+    "drawRate": 0.24
+  },
+  "Sweden - Allsvenskan": {
+    "avgHome": 1.48,
+    "avgAway": 1.37,
+    "drawRate": 0.22
+  },
+  "Sweden - Superettan": {
+    "avgHome": 1.6,
+    "avgAway": 1.26,
+    "drawRate": 0.27
+  },
+  "Sweden - Div 1 - Norra": {
+    "avgHome": 1.88,
+    "avgAway": 1.49,
+    "drawRate": 0.2
+  },
+  "Sweden - Div 1 - Sodra": {
+    "avgHome": 1.68,
+    "avgAway": 1.35,
+    "drawRate": 0.22
+  },
+  "Sweden - Div 2 - N Gotaland": {
+    "avgHome": 1.71,
+    "avgAway": 1.46,
+    "drawRate": 0.26
+  },
+  "Sweden - Div 2 - N Svealand": {
+    "avgHome": 1.97,
+    "avgAway": 1.67,
+    "drawRate": 0.2
+  },
+  "Sweden - Div 2 - Norrland": {
+    "avgHome": 1.89,
+    "avgAway": 1.52,
+    "drawRate": 0.18
+  },
+  "Sweden - Div 2 - S Svealand": {
+    "avgHome": 2.03,
+    "avgAway": 1.5,
+    "drawRate": 0.19
+  },
+  "Sweden - Div 2 - V Götaland": {
+    "avgHome": 2.07,
+    "avgAway": 1.74,
+    "drawRate": 0.18
+  },
+  "Sweden - Div 2 - S Götaland": {
+    "avgHome": 1.71,
+    "avgAway": 1.52,
+    "drawRate": 0.2
+  },
+  "Sweden - Allsvenskan Women": {
+    "avgHome": 1.71,
+    "avgAway": 1.62,
+    "drawRate": 0.14
+  },
+  "Sweden - Elitetan Women": {
+    "avgHome": 1.71,
+    "avgAway": 1.51,
+    "drawRate": 0.17
+  },
+  "Switzerland - Super League": {
+    "avgHome": 1.91,
+    "avgAway": 1.47,
+    "drawRate": 0.19
+  },
+  "Switzerland - Challenge League": {
+    "avgHome": 1.66,
+    "avgAway": 1.34,
+    "drawRate": 0.22
+  },
+  "Switzerland - Promotion League": {
+    "avgHome": 2.09,
+    "avgAway": 1.6,
+    "drawRate": 0.24
+  },
+  "Switzerland - Women Super League": {
+    "avgHome": 1.54,
+    "avgAway": 1.54,
+    "drawRate": 0.2
+  },
+  "Thailand - Thai League 1": {
+    "avgHome": 1.57,
+    "avgAway": 1.19,
+    "drawRate": 0.34
+  },
+  "Turkey - Super Lig": {
+    "avgHome": 1.26,
+    "avgAway": 1.28,
+    "drawRate": 0.28
+  },
+  "Turkey - 1. Lig": {
+    "avgHome": 1.63,
+    "avgAway": 1.29,
+    "drawRate": 0.32
+  },
+  "Turkey - 2. Lig White Group": {
+    "avgHome": 1.28,
+    "avgAway": 1.49,
+    "drawRate": 0.2
+  },
+  "Turkey - 2. Lig Red Group": {
+    "avgHome": 1.81,
+    "avgAway": 1.35,
+    "drawRate": 0.26
+  },
+  "Turkey - 3. Lig Group 1": {
+    "avgHome": 1.18,
+    "avgAway": 1.28,
+    "drawRate": 0.22
+  },
+  "Turkey - 3. Lig Group 2": {
+    "avgHome": 1.19,
+    "avgAway": 1.13,
+    "drawRate": 0.42
+  },
+  "Turkey - 3. Lig Group 3": {
+    "avgHome": 1.55,
+    "avgAway": 1.19,
+    "drawRate": 0.26
+  },
+  "Turkey - 3. Lig Group 4": {
+    "avgHome": 1.44,
+    "avgAway": 1.21,
+    "drawRate": 0.25
+  },
+  "Turkey - Super Lig Women": {
+    "avgHome": 2.0,
+    "avgAway": 1.79,
+    "drawRate": 0.12
+  },
+  "UAE - Pro League": {
+    "avgHome": 1.31,
+    "avgAway": 1.14,
+    "drawRate": 0.18
+  },
+  "Ukraine - Premier League": {
+    "avgHome": 1.25,
+    "avgAway": 1.36,
+    "drawRate": 0.26
+  },
+  "Ukraine - Persha Liga": {
+    "avgHome": 1.12,
+    "avgAway": 1.1,
+    "drawRate": 0.25
+  },
+  "Ukraine - U19 League": {
+    "avgHome": 1.68,
+    "avgAway": 1.54,
+    "drawRate": 0.18
+  },
+  "Uruguay - Liga AUF Uruguaya - Apertura": {
+    "avgHome": 1.17,
+    "avgAway": 1.1,
+    "drawRate": 0.32
+  },
+  "Uruguay - Liga AUF Uruguaya - Intermediate": {
+    "avgHome": 1.57,
+    "avgAway": 1.02,
+    "drawRate": 0.23
+  },
+  "Uruguay - Liga AUF Uruguaya - Clausura": {
+    "avgHome": 1.29,
+    "avgAway": 1.03,
+    "drawRate": 0.25
+  },
+  "USA - MLS": {
+    "avgHome": 1.64,
+    "avgAway": 1.36,
+    "drawRate": 0.25
+  },
+  "USA - USL Championship": {
+    "avgHome": 1.51,
+    "avgAway": 1.19,
+    "drawRate": 0.26
+  },
+  "USA - USL League One": {
+    "avgHome": 1.61,
+    "avgAway": 1.23,
+    "drawRate": 0.29
+  },
+  "USA - NWSL": {
+    "avgHome": 1.4,
+    "avgAway": 1.26,
+    "drawRate": 0.28
+  },
+  "USA - USL Super League": {
+    "avgHome": 1.52,
+    "avgAway": 1.38,
+    "drawRate": 0.4
+  },
+  "Venezuela - Liga FUTVE - Apertura": {
+    "avgHome": 1.25,
+    "avgAway": 1.03,
+    "drawRate": 0.29
+  },
+  "Venezuela - Liga FUTVE - Clausura": {
+    "avgHome": 1.46,
+    "avgAway": 0.92,
+    "drawRate": 0.18
+  },
+  "Vietnam - V League": {
+    "avgHome": 1.47,
+    "avgAway": 1.18,
+    "drawRate": 0.32
+  },
+  "Vietnam - National League Women": {
+    "avgHome": 1.0,
+    "avgAway": 1.07,
+    "drawRate": 0.27
+  },
+  "Wales - Cymru Premier": {
+    "avgHome": 1.58,
+    "avgAway": 1.51,
+    "drawRate": 0.26
+  }
+}
