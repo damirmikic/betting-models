@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Opta Power Ratings – Bivariate Poisson Odds</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opta Power Ratings &mdash; Bivariate Poisson Odds</title>
   <link rel="stylesheet" href="style.css" />
   
 
@@ -14,7 +15,8 @@
   <main class="shell">
     <header class="header">
         <nav class="top-nav">
-            <a href="snooker.html">Snooker Model</a>
+            <a href="snooker.html">Snooker model</a>
+            <a href="tabletennis.html">Table tennis model</a>
         </nav>
       <div>
         <h1>Opta Power Model</h1>
@@ -53,7 +55,7 @@
         <!-- Alpha slider -->
         <div class="field">
           <label for="alphaSlider">
-            Alpha (rating → xG): <span id="alphaDisplay">0.070</span>
+            Alpha (rating &times; xG): <span id="alphaDisplay">0.070</span>
           </label>
           <input type="range" id="alphaSlider" min="0.000" max="0.150" step="0.001" value="0.070">
           <small class="hint">Higher alpha = ratings have stronger impact on expected goals.</small>
@@ -62,7 +64,7 @@
 
       <div class="actions-row">
         <button id="calculateBtn" disabled>Calculate odds</button>
-        <span id="status" class="status-text"></span>
+        <span id="status" class="status-text" role="status" aria-live="polite"></span>
       </div>
     </section>
 
@@ -76,15 +78,15 @@
       <div class="prob-grid">
         <div class="prob-card">
           <div class="prob-label">Home</div>
-          <div class="prob-val" id="pHome">–</div>
+          <div class="prob-val" id="pHome">-</div>
         </div>
         <div class="prob-card">
           <div class="prob-label">Draw</div>
-          <div class="prob-val" id="pDraw">–</div>
+          <div class="prob-val" id="pDraw">-</div>
         </div>
         <div class="prob-card">
           <div class="prob-label">Away</div>
-          <div class="prob-val" id="pAway">–</div>
+          <div class="prob-val" id="pAway">-</div>
         </div>
       </div>
     </section>
@@ -95,15 +97,15 @@
       <div class="odds-grid separated">
         <div class="odds-card">
           <div class="odds-label">Home (1)</div>
-          <div class="odds-odd" id="oHome">–</div>
+          <div class="odds-odd" id="oHome">-</div>
         </div>
         <div class="odds-card">
           <div class="odds-label">Draw (X)</div>
-          <div class="odds-odd" id="oDraw">–</div>
+          <div class="odds-odd" id="oDraw">-</div>
         </div>
         <div class="odds-card">
           <div class="odds-label">Away (2)</div>
-          <div class="odds-odd" id="oAway">–</div>
+          <div class="odds-odd" id="oAway">-</div>
         </div>
       </div>
     </section>
@@ -120,44 +122,45 @@
           <div class="detail-row">
             <span>League avg goals</span>
             <span class="detail-val">
-              home <span id="avgHome">–</span> · away <span id="avgAway">–</span>
+              home <span id="avgHome">-</span> &middot; away <span id="avgAway">-</span>
             </span>
           </div>
           <div class="detail-row">
             <span>League draw%</span>
-            <span id="drawRate" class="detail-val">–</span>
+            <span id="drawRate" class="detail-val">-</span>
           </div>
           <div class="detail-row">
-            <span>Rating diff (H–A)</span>
-            <span id="ratingDiff" class="detail-val">–</span>
+            <span>Rating diff (H - A)</span>
+            <span id="ratingDiff" class="detail-val">-</span>
           </div>
           <div class="detail-row">
             <span>EGD (expected goal diff)</span>
-            <span id="egd" class="detail-val">–</span>
+            <span id="egd" class="detail-val">-</span>
           </div>
           <div class="detail-row">
-            <span>λ<sub>home</sub></span>
-            <span id="lambdaHome" class="detail-val">–</span>
+            <span>Lambda<sub>home</sub></span>
+            <span id="lambdaHome" class="detail-val">-</span>
           </div>
           <div class="detail-row">
-            <span>λ<sub>away</sub></span>
-            <span id="lambdaAway" class="detail-val">–</span>
+            <span>Lambda<sub>away</sub></span>
+            <span id="lambdaAway" class="detail-val">-</span>
           </div>
           <div class="detail-row">
-            <span>λ<sub>3</sub> (correlation)</span>
-            <span id="lambda3Val" class="detail-val">–</span>
+            <span>Lambda<sub>3</sub> (correlation)</span>
+            <span id="lambda3Val" class="detail-val">-</span>
           </div>
         </div>
         <p class="footnote">
-          λ₃ is solved so that model draw probability matches league draw% when possible;
-          if league draw% ≤ independent Poisson draw, λ₃ = 0.
+          Lambda<sub>3</sub> is solved so the model draw probability matches
+          the league draw% when possible; if the league draw% is below the
+          independent Poisson draw, Lambda<sub>3</sub> = 0.
         </p>
       </section>
     </section>
 
     <footer class="footer">
       <small>
-        Teams from Opta power rankings · League stats from <code>leagues_min.json</code>.
+        Teams from Opta power rankings &mdash; League stats from <code>leagues_min.json</code>.
       </small>
     </footer>
   </main>
