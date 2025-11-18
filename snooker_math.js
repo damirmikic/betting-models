@@ -1,5 +1,5 @@
 // snooker_math.js
-// Frame probability → match, totals, handicap markets
+// Frame probability -> match, totals, handicap markets
 
 (function () {
   "use strict";
@@ -23,98 +23,160 @@
   }
 
   // Core: compute markets from frame probability pA and best-of N
-  function computeMarkets(pA, bestOf, margin) {
+  function computeMarkets(pA, bestOf, margin, state = {}) {
     pA = clamp01(pA);
     const pB = 1 - pA;
     const N = bestOf;
-    const K = Math.floor(N / 2) + 1; // first-to-K
+    const K = Math.floor(N / 2) + 1;
+    const framesA = Math.max(0, Math.min(K - 1, Math.floor(state.framesA ?? 0)));
+    const framesB = Math.max(0, Math.min(K - 1, Math.floor(state.framesB ?? 0)));
+    const framesPlayed = framesA + framesB;
+    const remainingA = K - framesA;
+    const remainingB = K - framesB;
 
-    // --- Match winner: P(A wins match) via negative binomial sum ---
+    if (remainingA <= 0 || remainingB <= 0 || framesPlayed >= N) {
+      const aAlreadyWon = remainingA <= 0;
+      return {
+        pFrameA: pA,
+        pFrameB: pB,
+        bestOf: N,
+        firstTo: K,
+        match: {
+          pA: aAlreadyWon ? 1 : 0,
+          pB: aAlreadyWon ? 0 : 1,
+          pA_margined: aAlreadyWon ? 1 : 0,
+          pB_margined: aAlreadyWon ? 0 : 1,
+        },
+        totals: [],
+        handicap: [],
+        framesDist: [],
+        expectedFrames: framesPlayed,
+      };
+    }
+
+    const framesDistMap = new Map();
     let pMatchA = 0;
-    for (let b = 0; b <= K - 1; b++) {
-      // A first to K, B has b
-      const ways = comb(K - 1 + b, b);
-      pMatchA += ways * Math.pow(pA, K) * Math.pow(pB, b);
-    }
-    const pMatchB = 1 - pMatchA;
+    let pMatchB = 0;
 
-    // --- Frames distribution F in [K .. 2K-1] ---
-    const framesDist = [];
-    let expectedFrames = 0;
-
-    for (let F = K; F <= 2 * K - 1; F++) {
-      const winsB = F - K;
-
-      const probAwinF = comb(F - 1, K - 1) * Math.pow(pA, K) * Math.pow(pB, winsB);
-      const probBwinF = comb(F - 1, K - 1) * Math.pow(pB, K) * Math.pow(pA, winsB);
-      const probTotal = probAwinF + probBwinF;
-
-      framesDist.push({
-        frames: F,
-        prob: probTotal,
-        probAwin: probAwinF,
-        probBwin: probBwinF,
-      });
-
-      expectedFrames += F * probTotal;
-    }
-
-    // --- O/U line ≈ around expected frames ---
-    const roundedE = Math.round(expectedFrames);
-    const ouLine = roundedE - 0.5;
-
-    let pOver = 0;
-    let pUnder = 0;
-    framesDist.forEach((d) => {
-      if (d.frames >= roundedE) pOver += d.prob;
-      else pUnder += d.prob;
-    });
-
-    // --- Handicap A -1.5 frames ---
-    let pA_cover = 0; // Player A -1.5 frames
-    framesDist.forEach((d) => {
-      // When A wins match in F frames:
-      const marginA = 2 * K - d.frames; // final score: A=K, B=F-K
-      if (marginA >= 2) {
-        pA_cover += d.probAwin;
+    function addOutcome(totalFrames, prob, winner) {
+      let entry = framesDistMap.get(totalFrames);
+      if (!entry) {
+        entry = { frames: totalFrames, prob: 0, probAwin: 0, probBwin: 0 };
+        framesDistMap.set(totalFrames, entry);
       }
-    });
-    const pB_plus = 1 - pA_cover; // Player B +1.5
+      entry.prob += prob;
+      if (winner === "A") entry.probAwin += prob;
+      else entry.probBwin += prob;
+    }
 
-    // Apply market margin (simple proportional overround)
+    for (let b = 0; b <= remainingB - 1; b++) {
+      const ways = comb(remainingA - 1 + b, b);
+      const prob = ways * Math.pow(pA, remainingA) * Math.pow(pB, b);
+      pMatchA += prob;
+      const totalFrames = framesPlayed + remainingA + b;
+      addOutcome(totalFrames, prob, "A");
+    }
+
+    for (let a = 0; a <= remainingA - 1; a++) {
+      const ways = comb(remainingB - 1 + a, a);
+      const prob = ways * Math.pow(pB, remainingB) * Math.pow(pA, a);
+      pMatchB += prob;
+      const totalFrames = framesPlayed + remainingB + a;
+      addOutcome(totalFrames, prob, "B");
+    }
+
+    let framesDist = Array.from(framesDistMap.values()).sort((x, y) => x.frames - y.frames);
+    const totalProb = framesDist.reduce((sum, d) => sum + d.prob, 0);
+    if (totalProb > 0 && Math.abs(totalProb - 1) > 1e-6) {
+      framesDist = framesDist.map((d) => ({
+        frames: d.frames,
+        prob: d.prob / totalProb,
+        probAwin: d.probAwin / totalProb,
+        probBwin: d.probBwin / totalProb,
+      }));
+      pMatchA /= totalProb;
+      pMatchB = 1 - pMatchA;
+    }
+
+    let expectedFrames = 0;
+    framesDist.forEach((d) => {
+      expectedFrames += d.frames * d.prob;
+    });
+
+    const minFrames = framesDist.length ? framesDist[0].frames : framesPlayed;
+    const maxFrames = framesDist.length ? framesDist[framesDist.length - 1].frames : framesPlayed;
+
     const marginVal = isFinite(margin) ? Math.max(0, margin) : 0;
     function addMargin(prob) {
       if (marginVal <= 0) return prob;
-      // naive margin: scale towards 0.5 a bit, or scale probabilities to sum>1
-      return prob * (1 + marginVal);
+      const scaled = prob * (1 + marginVal);
+      return Math.min(0.999, scaled);
     }
 
-    // Match (2-way)
-    let mA = addMargin(pMatchA);
-    let mB = addMargin(pMatchB);
-    const mSum = mA + mB;
-    if (mSum > 0) {
-      mA /= mSum;
-      mB /= mSum;
+    function totalsVariant(cut) {
+      const clampedCut = Math.max(minFrames, Math.min(maxFrames, Math.round(cut)));
+      let over = 0;
+      framesDist.forEach((d) => {
+        if (d.frames >= clampedCut) over += d.prob;
+      });
+      const under = Math.max(0, 1 - over);
+      return {
+        cutFrames: clampedCut,
+        line: clampedCut - 0.5,
+        pOver: over,
+        pUnder: under,
+        pOver_margined: addMargin(over),
+        pUnder_margined: addMargin(under),
+      };
     }
 
-    // O/U (2-way)
-    let oOver = addMargin(pOver);
-    let oUnder = addMargin(pUnder);
-    const oSum = oOver + oUnder;
-    if (oSum > 0) {
-      oOver /= oSum;
-      oUnder /= oSum;
+    function handicapVariant(lineMagnitude) {
+      const requiredMargin = Math.max(1, Math.floor(lineMagnitude + 0.5));
+      let cover = 0;
+      framesDist.forEach((d) => {
+        const marginA = 2 * K - d.frames;
+        if (marginA >= requiredMargin) {
+          cover += d.probAwin;
+        }
+      });
+      const plus = Math.max(0, 1 - cover);
+      return {
+        line: lineMagnitude,
+        pA_cover: cover,
+        pB_plus: plus,
+        pA_cover_margined: addMargin(cover),
+        pB_plus_margined: addMargin(plus),
+      };
     }
 
-    // Handicap (2-way)
-    let hA = addMargin(pA_cover);
-    let hB = addMargin(pB_plus);
-    const hSum = hA + hB;
-    if (hSum > 0) {
-      hA /= hSum;
-      hB /= hSum;
-    }
+    const roundedE = Math.round(expectedFrames);
+    const totalsDeltas = [-2, -1, 0, 1, 2];
+    const totalsMap = new Map();
+    totalsDeltas.forEach((delta) => {
+      const variant = totalsVariant(roundedE + delta);
+      const key = variant.line.toFixed(1);
+      if (!totalsMap.has(key)) {
+        totalsMap.set(key, variant);
+      }
+    });
+    const totalsLines = Array.from(totalsMap.values())
+      .filter(
+        (variant) =>
+          variant.pOver > 1e-6 &&
+          variant.pUnder > 1e-6 &&
+          variant.pOver < 1 - 1e-6 &&
+          variant.pUnder < 1 - 1e-6
+      )
+      .sort((a, b) => a.line - b.line);
+
+    const baseHandicap = 1.5;
+    const handicapOffsets = [-1, 0, 1];
+    const handicapLines = handicapOffsets.map((offset) =>
+      handicapVariant(Math.max(0.5, baseHandicap + offset))
+    );
+
+    const mA = addMargin(pMatchA);
+    const mB = addMargin(pMatchB);
 
     return {
       pFrameA: pA,
@@ -127,29 +189,17 @@
         pA_margined: mA,
         pB_margined: mB,
       },
-      totals: {
-        line: ouLine,
-        cutFrames: roundedE,
-        pOver,
-        pUnder,
-        pOver_margined: oOver,
-        pUnder_margined: oUnder,
-      },
-      handicap: {
-        line: -1.5,
-        pA_cover: pA_cover,
-        pB_plus: pB_plus,
-        pA_cover_margined: hA,
-        pB_plus_margined: hB,
-      },
+      totals: totalsLines,
+      handicap: handicapLines,
       framesDist,
       expectedFrames,
     };
   }
 
+
   // Odds helper for UI
   function probToOdds(p) {
-    if (!isFinite(p) || p <= 0) return "–";
+    if (!isFinite(p) || p <= 0) return "-";
     return (1 / p).toFixed(2);
   }
 
