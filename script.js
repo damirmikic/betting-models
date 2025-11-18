@@ -1,6 +1,8 @@
 // CONFIG
 let ALPHA = 0.07;
-const MAX_GOALS = 10;
+const MIN_LAMBDA = 0.05;
+const GOAL_TAIL_TOLERANCE = 1e-4;
+const MAX_LAMBDA3 = 10;
 const OPTA_URL =
   "https://dataviz.theanalyst.com/opta-power-rankings/pr-reference.json";
 const LEAGUES_JSON = "leagues_min.json";
@@ -64,9 +66,9 @@ leagueSelect.addEventListener("change", () => {
       drawRateEl.textContent = "N/A";
     }
   } else {
-    avgHomeEl.textContent = "–";
-    avgAwayEl.textContent = "–";
-    drawRateEl.textContent = "–";
+    avgHomeEl.textContent = "-";
+    avgAwayEl.textContent = "-";
+    drawRateEl.textContent = "-";
   }
 
   maybeEnableButton();
@@ -187,15 +189,20 @@ function handleCalculate() {
   const avgAway = currentLeague.avgAway;
   const targetDraw = currentLeague.drawRate;
 
-  const lambdaHome = avgHome + EGD / 2;
-  const lambdaAway = avgAway - EGD / 2;
+  const lambdaHomeRaw = avgHome + EGD / 2;
+  const lambdaAwayRaw = avgAway - EGD / 2;
 
-  const lambda3 = solveLambda3(lambdaHome, lambdaAway, targetDraw);
+  const lambdaHome = Math.max(MIN_LAMBDA, lambdaHomeRaw);
+  const lambdaAway = Math.max(MIN_LAMBDA, lambdaAwayRaw);
+  const goalCap = determineGoalCap(lambdaHome, lambdaAway);
+
+  const lambda3 = solveLambda3(lambdaHome, lambdaAway, targetDraw, goalCap);
 
   const { pHome, pDraw, pAway } = bivariateOutcome(
     lambdaHome,
     lambdaAway,
-    lambda3
+    lambda3,
+    goalCap
   );
 
   renderResults({
@@ -237,13 +244,13 @@ function bivariatePMF(i, j, lambda1, lambda2, lambda3) {
   return Math.exp(-(lambda1 + lambda2 + lambda3)) * sum;
 }
 
-function bivariateOutcome(lambdaHome, lambdaAway, lambda3) {
+function bivariateOutcome(lambdaHome, lambdaAway, lambda3, goalCap) {
   let pH = 0,
     pD = 0,
     pA = 0;
 
-  for (let i = 0; i <= MAX_GOALS; i++) {
-    for (let j = 0; j <= MAX_GOALS; j++) {
+  for (let i = 0; i <= goalCap; i++) {
+    for (let j = 0; j <= goalCap; j++) {
       const p = bivariatePMF(i, j, lambdaHome, lambdaAway, lambda3);
       if (i > j) pH += p;
       else if (i < j) pA += p;
@@ -255,34 +262,34 @@ function bivariateOutcome(lambdaHome, lambdaAway, lambda3) {
 }
 
 // independent Poisson draw
-function independentDraw(lambdaHome, lambdaAway) {
-  const ph = poissonVector(lambdaHome);
-  const pa = poissonVector(lambdaAway);
+function independentDraw(lambdaHome, lambdaAway, goalCap) {
+  const ph = poissonVector(lambdaHome, goalCap);
+  const pa = poissonVector(lambdaAway, goalCap);
   let p = 0;
   for (let i = 0; i < ph.length; i++) p += ph[i] * pa[i];
   return p;
 }
 
 // bivariate draw
-function bivariateDraw(lambdaHome, lambdaAway, lambda3) {
+function bivariateDraw(lambdaHome, lambdaAway, lambda3, goalCap) {
   let p = 0;
-  for (let i = 0; i <= MAX_GOALS; i++) {
+  for (let i = 0; i <= goalCap; i++) {
     p += bivariatePMF(i, i, lambdaHome, lambdaAway, lambda3);
   }
   return p;
 }
 
-function poissonVector(lambda) {
-  const probs = new Array(MAX_GOALS + 1);
+function poissonVector(lambda, limit) {
+  const probs = new Array(limit + 1);
   probs[0] = Math.exp(-lambda);
-  for (let k = 1; k <= MAX_GOALS; k++) {
+  for (let k = 1; k <= limit; k++) {
     probs[k] = (probs[k - 1] * lambda) / k;
   }
   return probs;
 }
 
 // solve λ3 from league draw%
-function solveLambda3(lambdaHome, lambdaAway, targetDraw) {
+function solveLambda3(lambdaHome, lambdaAway, targetDraw, goalCap) {
   if (
     targetDraw === null ||
     targetDraw === undefined ||
@@ -291,24 +298,62 @@ function solveLambda3(lambdaHome, lambdaAway, targetDraw) {
     return 0.15; // generic small correlation
   }
 
-  const baseDraw = independentDraw(lambdaHome, lambdaAway);
+  const baseDraw = independentDraw(lambdaHome, lambdaAway, goalCap);
   if (targetDraw <= baseDraw) {
     return 0.0;
   }
 
   let lo = 0.0;
-  let hi = 3.0;
-  let best = hi;
+  let hi = 0.5;
+  let pHi = bivariateDraw(lambdaHome, lambdaAway, hi, goalCap);
 
-  for (let iter = 0; iter < 30; iter++) {
+  while (pHi < targetDraw && hi < MAX_LAMBDA3) {
+    lo = hi;
+    hi = Math.min(MAX_LAMBDA3, hi * 2);
+    pHi = bivariateDraw(lambdaHome, lambdaAway, hi, goalCap);
+    if (hi === MAX_LAMBDA3) break;
+  }
+
+  if (pHi < targetDraw) {
+    return hi;
+  }
+
+  let best = hi;
+  for (let iter = 0; iter < 40; iter++) {
     const mid = (lo + hi) / 2;
-    const p = bivariateDraw(lambdaHome, lambdaAway, mid);
+    const p = bivariateDraw(lambdaHome, lambdaAway, mid, goalCap);
     best = mid;
     if (p > targetDraw) hi = mid;
     else lo = mid;
   }
 
   return best;
+}
+
+function determineGoalCap(lambdaHome, lambdaAway) {
+  const maxLambda = Math.max(lambdaHome, lambdaAway);
+  let cap = Math.max(10, Math.ceil(maxLambda + 6));
+  while (
+    poissonTailProbability(lambdaHome, cap) > GOAL_TAIL_TOLERANCE ||
+    poissonTailProbability(lambdaAway, cap) > GOAL_TAIL_TOLERANCE
+  ) {
+    cap += 2;
+    if (cap >= 40) break;
+  }
+  return cap;
+}
+
+function poissonTailProbability(lambda, limit) {
+  if (!Number.isFinite(lambda) || lambda <= 0) {
+    return 0;
+  }
+  let term = Math.exp(-lambda);
+  let cumulative = term;
+  for (let k = 1; k <= limit; k++) {
+    term = (term * lambda) / k;
+    cumulative += term;
+  }
+  return Math.max(0, 1 - cumulative);
 }
 
 // RENDER
@@ -332,9 +377,9 @@ function renderResults({
   pDrawEl.textContent = (pDraw * 100).toFixed(1) + "%";
   pAwayEl.textContent = (pAway * 100).toFixed(1) + "%";
 
-  oHomeEl.textContent = pHome > 0 ? (1 / pHome).toFixed(2) : "–";
-  oDrawEl.textContent = pDraw > 0 ? (1 / pDraw).toFixed(2) : "–";
-  oAwayEl.textContent = pAway > 0 ? (1 / pAway).toFixed(2) : "–";
+  oHomeEl.textContent = pHome > 0 ? (1 / pHome).toFixed(2) : "-";
+  oDrawEl.textContent = pDraw > 0 ? (1 / pDraw).toFixed(2) : "-";
+  oAwayEl.textContent = pAway > 0 ? (1 / pAway).toFixed(2) : "-";
 
   ratingDiffEl.textContent = ratingDiff.toFixed(2);
   egdEl.textContent = EGD.toFixed(3);
@@ -350,5 +395,5 @@ function renderResults({
     1
   )}) vs ${awayTeam.contestantName} (${R_away.toFixed(
     1
-  )}) with α=${ALPHA.toFixed(3)}.`;
+  )}) with alpha=${ALPHA.toFixed(3)}.`;
 }
