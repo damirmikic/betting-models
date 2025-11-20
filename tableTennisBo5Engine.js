@@ -41,6 +41,21 @@
     return priced;
   }
 
+  function normalizeProbabilityMap(probMap) {
+    const entries = Object.entries(probMap || {});
+    const totalProb = entries.reduce((acc, [, prob]) => acc + Number(prob || 0), 0);
+    if (totalProb <= 0) {
+      return { normalized: { ...probMap }, totalProb };
+    }
+
+    const normalized = {};
+    entries.forEach(([key, prob]) => {
+      normalized[key] = Number(prob || 0) / totalProb;
+    });
+
+    return { normalized, totalProb };
+  }
+
   function combination(n, k) {
     if (k < 0 || k > n) return 0;
     if (k === 0 || k === n) return 1;
@@ -126,7 +141,8 @@
   }
 
   function expectedTotalSets(totalSetsDist) {
-    return Object.entries(totalSetsDist).reduce(
+    const { normalized } = normalizeProbabilityMap(totalSetsDist);
+    return Object.entries(normalized).reduce(
       (acc, [sets, prob]) => acc + Number(sets) * prob,
       0
     );
@@ -147,6 +163,18 @@
     const eSets = expectedTotalSets(totalSetsDist);
     const eSetPts = expectedSetPoints(s, pointsParams);
     return eSets * eSetPts;
+  }
+
+  function expectedPointsSummary(s, totalSetsDist, pointsParams) {
+    const eSetPts = expectedSetPoints(s, pointsParams);
+    const eSets = expectedTotalSets(totalSetsDist);
+    const expectedMatchPoints = eSets * eSetPts;
+
+    return {
+      expectedMatchPoints,
+      expectedSetPoints: eSetPts,
+      expectedTotalSets: eSets,
+    };
   }
 
   function expectedPointsHandicap(s, eMatchPoints) {
@@ -207,10 +235,12 @@
   }
 
   function priceTotalSets(totalSetsDist, marginMulti = 1.07) {
-    const entries = Object.keys(totalSetsDist)
+    const { normalized, totalProb } = normalizeProbabilityMap(totalSetsDist);
+
+    const entries = Object.keys(normalized)
       .map((k) => Number(k))
       .sort((a, b) => a - b);
-    const probs = entries.map((key) => totalSetsDist[key]);
+    const probs = entries.map((key) => normalized[key]);
     const priced = applyMarginMulti(probs, marginMulti);
 
     const pricedMap = {};
@@ -239,6 +269,9 @@
       }, {}),
       priced: pricedMap,
       ouLines,
+      meta: {
+        totalProb,
+      },
     };
   }
 
@@ -295,13 +328,15 @@
     totalSetsDist,
     pointsParams = { a: 15.5, b: 7.5 }
   ) {
-    const eMatchPoints = expectedMatchPoints(s, totalSetsDist, pointsParams);
-    const ePointsHandicap = expectedPointsHandicap(s, eMatchPoints);
+    const summary = expectedPointsSummary(s, totalSetsDist, pointsParams);
+    const ePointsHandicap = expectedPointsHandicap(s, summary.expectedMatchPoints);
 
     return {
       fair: {
-        expectedMatchPoints: eMatchPoints,
+        expectedMatchPoints: summary.expectedMatchPoints,
         expectedPointsHandicap: ePointsHandicap,
+        expectedSetPoints: summary.expectedSetPoints,
+        expectedTotalSets: summary.expectedTotalSets,
       },
     };
   }
@@ -360,6 +395,7 @@
     expectedSetPoints,
     expectedMatchPoints,
     expectedPointsHandicap,
+    expectedPointsSummary,
   };
 
   window.TableTennisBo5Engine = api;
