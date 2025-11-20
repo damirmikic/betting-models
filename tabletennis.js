@@ -31,12 +31,29 @@
   const detailSetProbBEl = document.getElementById("ttDetailSetProbB");
   const detailExpectedSetsEl = document.getElementById("ttDetailExpectedSets");
   const detailExpectedPointsEl = document.getElementById("ttDetailExpectedPoints");
+  const detailExpectedSetPointsEl = document.getElementById("ttDetailExpectedSetPoints");
+  const pointsPerSetEl = document.getElementById("ttPointsPerSet");
   const pointsExpectedEl = document.getElementById("ttPointsExpected");
   const pointsHandicapEl = document.getElementById("ttPointsHandicap");
   const formatNoteEl = document.getElementById("ttFormatNote");
 
-  [formatSelect, oddsAwayInput, marginBinaryInput, marginMultiInput].forEach(
-    (input) => {
+  [oddsHomeInput, oddsAwayInput].forEach((input) => {
+    if (!input) return;
+    input.addEventListener("change", () => runModel(true));
+  });
+
+  [
+    marginWinnerInput,
+    marginBinaryInput,
+    marginMultiInput,
+    pointsAInput,
+    pointsBInput,
+    formatSelect,
+  ].forEach((input) => {
+    if (!input) return;
+    if (input && input.tagName === "SELECT") {
+      input.addEventListener("change", () => runModel(true));
+    } else {
       input.addEventListener("input", () => runModel(true));
     }
   );
@@ -81,8 +98,8 @@
       renderCorrectScore(result.correctScoreMarket);
       renderPointsSummary(result.pointsMarkets);
       renderDetails(result);
-      renderSetsDistribution(result.correctScoreMarket, result.meta);
-      updateFormatNote(result.meta);
+      renderSetsDistribution(result.totalSets, result.correctScoreMarket);
+      logSanityWarnings(result, format);
 
       statusEl.textContent = `Calculated: odds ${oddsHome.toFixed(2)} vs ${oddsAway.toFixed(2)} · ${result.meta.label}.`;
     } catch (err) {
@@ -136,6 +153,11 @@
   function formatPercent(prob) {
     if (!Number.isFinite(prob)) return "-";
     return `${(prob * 100).toFixed(1)}%`;
+  }
+
+  function formatPoints(val, digits = 1) {
+    if (!Number.isFinite(val)) return "-";
+    return val.toFixed(digits);
   }
 
   function formatOdds(prob) {
@@ -243,14 +265,14 @@
 
   function renderPointsSummary(pointsMarkets) {
     if (!pointsMarkets) {
+      pointsPerSetEl.textContent = "-";
       pointsExpectedEl.textContent = "-";
       pointsHandicapEl.textContent = "-";
       return;
     }
     const fair = pointsMarkets.fair || {};
-    pointsExpectedEl.textContent = Number.isFinite(fair.expectedMatchPoints)
-      ? fair.expectedMatchPoints.toFixed(1)
-      : "-";
+    pointsPerSetEl.textContent = formatPoints(fair.expectedSetPoints);
+    pointsExpectedEl.textContent = formatPoints(fair.expectedMatchPoints);
     pointsHandicapEl.textContent = Number.isFinite(fair.expectedPointsHandicap)
       ? fair.expectedPointsHandicap.toFixed(1)
       : "-";
@@ -272,11 +294,9 @@
       detailExpectedSetsEl.textContent = "-";
     }
 
-    if (result.summary && Number.isFinite(result.summary.expectedMatchPoints)) {
-      detailExpectedPointsEl.textContent = result.summary.expectedMatchPoints.toFixed(1);
-    } else {
-      detailExpectedPointsEl.textContent = "-";
-    }
+    const pointsFair = result.pointsMarkets ? result.pointsMarkets.fair : null;
+    detailExpectedPointsEl.textContent = formatPoints(pointsFair?.expectedMatchPoints);
+    detailExpectedSetPointsEl.textContent = formatPoints(pointsFair?.expectedSetPoints);
   }
 
   function renderSetsDistribution(correctScore, meta) {
@@ -316,5 +336,43 @@
       ? "Model uses a BO7 (first-to-four sets) format and derives set probabilities from the implied fair match price."
       : "Model uses a BO5 (first-to-three sets) format and derives set probabilities from the implied fair match price.";
     formatNoteEl.textContent = copy;
+  }
+
+  function logSanityWarnings(result, format) {
+    const totalSetsFair = result.totalSets ? result.totalSets.fair : null;
+    const pointsFair = result.pointsMarkets ? result.pointsMarkets.fair : null;
+    const minSets = format === "bo7" ? 4 : 3;
+    const maxSets = format === "bo7" ? 7 : 5;
+
+    const totalProb = result.totalSets && result.totalSets.meta ? result.totalSets.meta.totalProb : null;
+
+    if (Number.isFinite(totalProb) && Math.abs(totalProb - 1) > 1e-3) {
+      console.warn("Total sets distribution not normalized", { totalProb });
+    }
+
+    if (totalSetsFair) {
+      const expectedSets = Object.entries(totalSetsFair).reduce(
+        (acc, [sets, prob]) => acc + Number(sets) * prob,
+        0
+      );
+
+      if (expectedSets < minSets - 0.05 || expectedSets > maxSets + 0.05) {
+        console.warn("Unexpected sets expectation", { expectedSets, minSets, maxSets });
+      }
+    }
+
+    if (pointsFair) {
+      const { expectedMatchPoints, expectedTotalSets, expectedSetPoints } = pointsFair;
+      if (
+        !Number.isFinite(expectedMatchPoints) ||
+        !Number.isFinite(expectedTotalSets) ||
+        !Number.isFinite(expectedSetPoints) ||
+        expectedMatchPoints <= 0 ||
+        expectedTotalSets <= 0 ||
+        expectedSetPoints <= 0
+      ) {
+        console.warn("Unexpected points expectation", pointsFair);
+      }
+    }
   }
 })();

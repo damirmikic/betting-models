@@ -206,7 +206,35 @@
       </div>
 
       <section class="card glass">
-        <h2 class="card-title">Correct score &amp; expectations</h2>
+        <h2 class="card-title">Model details</h2>
+        <div class="details-grid">
+          <div class="detail-row">
+            <span>P(A wins set)</span>
+            <span id="ttDetailSetProbA" class="detail-val">-</span>
+          </div>
+          <div class="detail-row">
+            <span>P(B wins set)</span>
+            <span id="ttDetailSetProbB" class="detail-val">-</span>
+          </div>
+          <div class="detail-row">
+            <span>Expected sets</span>
+            <span id="ttDetailExpectedSets" class="detail-val">-</span>
+          </div>
+          <div class="detail-row">
+            <span>Expected match points</span>
+            <span id="ttDetailExpectedPoints" class="detail-val">-</span>
+          </div>
+          <div class="detail-row">
+            <span>Expected set points</span>
+            <span id="ttDetailExpectedSetPoints" class="detail-val">-</span>
+          </div>
+        </div>
+
+        <p class="footnote">
+          Model derives set probabilities from the implied fair match price. Toggle BO5/BO7 to switch distributions.
+        </p>
+
+        <h3 class="card-title" style="margin-top:14px;font-size:1rem;">Sets distribution</h3>
         <div class="table-scroll">
           <table class="data-table">
             <thead>

@@ -81,7 +81,8 @@
     if (pMatch <= 0 || pMatch >= 1) {
       throw new Error("pMatch must be strictly between 0 and 1");
     }
-    let lo = 0.5;
+
+    let lo = 1e-9;
     let hi = 1 - 1e-9;
 
     let fLo = seriesWinProb(lo, targetSets) - pMatch;
