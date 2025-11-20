@@ -3,16 +3,14 @@
 (function () {
   "use strict";
 
-  const engine = window.TableTennisEngine || window.TableTennisBo5Engine;
+  const engine = window.TableTennisEngine;
 
+  const formatSelect = document.getElementById("ttFormat");
   const oddsHomeInput = document.getElementById("ttOddsHome");
   const oddsAwayInput = document.getElementById("ttOddsAway");
   const marginWinnerInput = document.getElementById("ttMarginWinner");
   const marginBinaryInput = document.getElementById("ttMarginBinary");
   const marginMultiInput = document.getElementById("ttMarginMulti");
-  const pointsAInput = document.getElementById("ttPointsA");
-  const pointsBInput = document.getElementById("ttPointsB");
-  const formatSelect = document.getElementById("ttFormat");
 
   const calcBtn = document.getElementById("ttCalcBtn");
   const statusEl = document.getElementById("ttStatus");
@@ -37,6 +35,12 @@
   const pointsPerSetEl = document.getElementById("ttPointsPerSet");
   const pointsExpectedEl = document.getElementById("ttPointsExpected");
   const pointsHandicapEl = document.getElementById("ttPointsHandicap");
+  const formatNoteEl = document.getElementById("ttFormatNote");
+
+  [oddsHomeInput, oddsAwayInput].forEach((input) => {
+    if (!input) return;
+    input.addEventListener("change", () => runModel(true));
+  });
 
   [oddsHomeInput, oddsAwayInput].forEach((input) => {
     if (!input) return;
@@ -57,6 +61,16 @@
     } else {
       input.addEventListener("input", () => runModel(true));
     }
+  );
+
+  oddsHomeInput.addEventListener("input", () => {
+    autoFillAwayOdds();
+    runModel(true);
+  });
+
+  marginWinnerInput.addEventListener("input", () => {
+    autoFillAwayOdds();
+    runModel(true);
   });
 
   calcBtn.addEventListener("click", () => runModel(false));
@@ -65,16 +79,12 @@
 
   function runModel(autoTriggered) {
     try {
+      const format = formatSelect.value;
       const oddsHome = parseOdds(oddsHomeInput);
       const oddsAway = parseOdds(oddsAwayInput);
       const marginWinner = parseOverround(marginWinnerInput);
       const marginBinary = parseOverround(marginBinaryInput);
       const marginMulti = parseOverround(marginMultiInput);
-      const pointsModel = {
-        a: parsePoints(pointsAInput, 15.5),
-        b: parsePoints(pointsBInput, 7.5),
-      };
-      const format = formatSelect && formatSelect.value === "bo7" ? "bo7" : "bo5";
 
       const result = engine.priceAllMarkets({
         oddsHome,
@@ -82,7 +92,6 @@
         marginWinner,
         marginBinary,
         marginMulti,
-        pointsModel,
         format,
       });
 
@@ -106,6 +115,20 @@
     }
   }
 
+  function autoFillAwayOdds() {
+    const homeOdds = parseFloat(oddsHomeInput.value);
+    const margin = parseOverroundValue(marginWinnerInput);
+    if (!Number.isFinite(homeOdds) || homeOdds <= 1 || !Number.isFinite(margin)) {
+      return;
+    }
+    const impliedHomeProb = 1 / homeOdds;
+    const targetOverround = margin;
+    const impliedAwayProb = targetOverround - impliedHomeProb;
+    if (impliedAwayProb <= 0) return;
+    const awayOdds = 1 / impliedAwayProb;
+    oddsAwayInput.value = awayOdds.toFixed(2);
+  }
+
   function parseOdds(input) {
     const val = parseFloat(input.value);
     if (!Number.isFinite(val) || val <= 1) {
@@ -117,21 +140,16 @@
   }
 
   function parseOverround(input) {
+    const factor = parseOverroundValue(input);
+    input.value = ((factor - 1) * 100).toFixed(1);
+    return factor;
+  }
+
+  function parseOverroundValue(input) {
     let pct = parseFloat(input.value);
     if (!Number.isFinite(pct)) pct = 0;
     pct = clamp(pct, 0, 100);
-    input.value = pct.toFixed(1);
     return 1 + pct / 100;
-  }
-
-  function parsePoints(input, fallback) {
-    const val = parseFloat(input.value);
-    if (!Number.isFinite(val)) {
-      input.value = fallback.toFixed(1);
-      return fallback;
-    }
-    input.value = val.toFixed(1);
-    return Math.max(0, val);
   }
 
   function clamp(x, lo, hi) {
@@ -167,8 +185,8 @@
       return;
     }
     const rows = [
-      { label: "Player A", prob: firstSet.priced.homeProb, odds: firstSet.priced.oddsHome },
-      { label: "Player B", prob: firstSet.priced.awayProb, odds: firstSet.priced.oddsAway },
+      { label: "Player A", prob: firstSet.priced.homeProb },
+      { label: "Player B", prob: firstSet.priced.awayProb },
     ];
     rows.forEach((row) => {
       const tr = document.createElement("tr");
@@ -187,18 +205,16 @@
       totalsBody.innerHTML = `<tr><td colspan="3">Totals unavailable</td></tr>`;
       return;
     }
-    Object.keys(totalSets.priced)
-      .sort((a, b) => Number(a) - Number(b))
-      .forEach((label) => {
-        const priced = totalSets.priced[label];
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${label} sets</td>
-          <td>${formatPercent(priced.prob)}</td>
-          <td>${formatOdds(priced.prob)}</td>
-        `;
-        totalsBody.appendChild(tr);
-      });
+    totalSets.counts.forEach((label) => {
+      const priced = totalSets.priced[label];
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${label} sets</td>
+        <td>${formatPercent(priced.prob)}</td>
+        <td>${formatOdds(priced.prob)}</td>
+      `;
+      totalsBody.appendChild(tr);
+    });
   }
 
   function renderTotalsOverUnder(totalSets) {
@@ -207,17 +223,12 @@
       totalsOuBody.innerHTML = `<tr><td colspan="3">Lines unavailable</td></tr>`;
       return;
     }
-    const lines = totalSets.ouLines || [];
-    if (!lines.length) {
-      totalsOuBody.innerHTML = `<tr><td colspan="3">Lines unavailable</td></tr>`;
-      return;
-    }
-    lines.forEach((line) => {
+    totalSets.lines.forEach((line) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>O/U ${line.label}</td>
-        <td>${formatPercent(line.over)} · ${formatOdds(line.over)}</td>
-        <td>${formatPercent(line.under)} · ${formatOdds(line.under)}</td>
+        <td>O/U ${line.label} sets</td>
+        <td>${formatPercent(line.overProb)} · ${line.overOdds.toFixed(2)}</td>
+        <td>${formatPercent(line.underProb)} · ${line.underOdds.toFixed(2)}</td>
       `;
       totalsOuBody.appendChild(tr);
     });
@@ -229,17 +240,12 @@
       handicapBody.innerHTML = `<tr><td colspan="3">Handicap unavailable</td></tr>`;
       return;
     }
-    const lines = setsHandicap.lines || [];
-    if (!lines.length) {
-      handicapBody.innerHTML = `<tr><td colspan="3">Handicap unavailable</td></tr>`;
-      return;
-    }
-    lines.forEach((line) => {
+    setsHandicap.lines.forEach((line) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>Player A ${line.line.toFixed(1)} / Player B ${(-line.line).toFixed(1)}</td>
-        <td>${formatPercent(line.priced.home.prob)} · ${formatOdds(line.priced.home.prob)}</td>
-        <td>${formatPercent(line.priced.away.prob)} · ${formatOdds(line.priced.away.prob)}</td>
+        <td>Player A ${-line.label.toFixed(1)} / Player B +${line.label.toFixed(1)}</td>
+        <td>${formatPercent(line.home.prob)} · ${formatOdds(line.home.prob)}</td>
+        <td>${formatPercent(line.away.prob)} · ${formatOdds(line.away.prob)}</td>
       `;
       handicapBody.appendChild(tr);
     });
@@ -251,20 +257,7 @@
       correctScoreBody.innerHTML = `<tr><td colspan="3">Correct score unavailable</td></tr>`;
       return;
     }
-    const labels = Object.keys(correctScore.priced);
-    if (!labels.length) {
-      correctScoreBody.innerHTML = `<tr><td colspan="3">Correct score unavailable</td></tr>`;
-      return;
-    }
-    const sorted = labels.sort((a, b) => {
-      const [ha, aa] = a.split("-").map(Number);
-      const [hb, ab] = b.split("-").map(Number);
-      const aHomeWin = ha > aa;
-      const bHomeWin = hb > ab;
-      if (aHomeWin !== bHomeWin) return aHomeWin ? -1 : 1;
-      return aHomeWin ? aa - ab : ha - hb;
-    });
-    sorted.forEach((label) => {
+    correctScore.order.forEach((label) => {
       const priced = correctScore.priced[label];
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -301,13 +294,8 @@
       detailSetProbBEl.textContent = (1 - s).toFixed(3);
     }
 
-    const totalSets = result.totalSets ? result.totalSets.fair : null;
-    if (totalSets) {
-      const expectedSets = Object.entries(totalSets).reduce(
-        (acc, [sets, prob]) => acc + Number(sets) * prob,
-        0
-      );
-      detailExpectedSetsEl.textContent = expectedSets.toFixed(2);
+    if (result.summary && Number.isFinite(result.summary.expectedSets)) {
+      detailExpectedSetsEl.textContent = result.summary.expectedSets.toFixed(2);
     } else {
       detailExpectedSetsEl.textContent = "-";
     }
@@ -317,41 +305,80 @@
     detailExpectedSetPointsEl.textContent = formatPoints(pointsFair?.expectedSetPoints);
   }
 
-  function renderSetsDistribution(totalSets, correctScoreMarket) {
+  function renderSetsDistribution(correctScore, meta) {
     setsDistBody.innerHTML = "";
-    if (!totalSets || !totalSets.fair || !correctScoreMarket) {
+    if (!correctScore) {
       setsDistBody.innerHTML = `<tr><td colspan="4">Distribution unavailable</td></tr>`;
       return;
     }
-    const fair = totalSets.fair;
-    const correctScoreFair = correctScoreMarket.fair || {};
+    const fair = correctScore.fair;
+    const rows = meta.totalSetCounts.map((sets) => {
+      const homeLabel = `${meta.setsToWin}-${sets - meta.setsToWin}`;
+      const awayLabel = `${sets - meta.setsToWin}-${meta.setsToWin}`;
+      const pA = fair[homeLabel] || 0;
+      const pB = fair[awayLabel] || 0;
+      return {
+        sets,
+        matchProb: pA + pB,
+        pA,
+        pB,
+      };
+    });
 
-    Object.keys(fair)
-      .sort((a, b) => Number(a) - Number(b))
-      .forEach((sets) => {
-        const matchProb = fair[sets];
-        const { homeWin, awayWin } = breakdownByWinner(Number(sets));
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${sets}</td>
-          <td>${formatPercent(matchProb)}</td>
-          <td>${formatPercent(homeWin)}</td>
-          <td>${formatPercent(awayWin)}</td>
-        `;
-        setsDistBody.appendChild(tr);
-      });
+    rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.sets}</td>
+        <td>${formatPercent(row.matchProb)}</td>
+        <td>${formatPercent(row.pA)}</td>
+        <td>${formatPercent(row.pB)}</td>
+      `;
+      setsDistBody.appendChild(tr);
+    });
+  }
 
-    function breakdownByWinner(setsPlayed) {
-      let homeWin = 0;
-      let awayWin = 0;
-      Object.entries(correctScoreFair).forEach(([score, prob]) => {
-        const [home, away] = score.split("-").map(Number);
-        if (home + away === setsPlayed) {
-          if (home > away) homeWin += prob;
-          else awayWin += prob;
-        }
-      });
-      return { homeWin, awayWin };
+  function updateFormatNote(meta) {
+    const copy = meta.setsToWin === 4
+      ? "Model uses a BO7 (first-to-four sets) format and derives set probabilities from the implied fair match price."
+      : "Model uses a BO5 (first-to-three sets) format and derives set probabilities from the implied fair match price.";
+    formatNoteEl.textContent = copy;
+  }
+
+  function logSanityWarnings(result, format) {
+    const totalSetsFair = result.totalSets ? result.totalSets.fair : null;
+    const pointsFair = result.pointsMarkets ? result.pointsMarkets.fair : null;
+    const minSets = format === "bo7" ? 4 : 3;
+    const maxSets = format === "bo7" ? 7 : 5;
+
+    const totalProb = result.totalSets && result.totalSets.meta ? result.totalSets.meta.totalProb : null;
+
+    if (Number.isFinite(totalProb) && Math.abs(totalProb - 1) > 1e-3) {
+      console.warn("Total sets distribution not normalized", { totalProb });
+    }
+
+    if (totalSetsFair) {
+      const expectedSets = Object.entries(totalSetsFair).reduce(
+        (acc, [sets, prob]) => acc + Number(sets) * prob,
+        0
+      );
+
+      if (expectedSets < minSets - 0.05 || expectedSets > maxSets + 0.05) {
+        console.warn("Unexpected sets expectation", { expectedSets, minSets, maxSets });
+      }
+    }
+
+    if (pointsFair) {
+      const { expectedMatchPoints, expectedTotalSets, expectedSetPoints } = pointsFair;
+      if (
+        !Number.isFinite(expectedMatchPoints) ||
+        !Number.isFinite(expectedTotalSets) ||
+        !Number.isFinite(expectedSetPoints) ||
+        expectedMatchPoints <= 0 ||
+        expectedTotalSets <= 0 ||
+        expectedSetPoints <= 0
+      ) {
+        console.warn("Unexpected points expectation", pointsFair);
+      }
     }
   }
 
