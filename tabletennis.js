@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  const engine = window.TableTennisBo5Engine;
+  const engine = window.TableTennisEngine || window.TableTennisBo5Engine;
 
   const oddsHomeInput = document.getElementById("ttOddsHome");
   const oddsAwayInput = document.getElementById("ttOddsAway");
@@ -12,6 +12,7 @@
   const marginMultiInput = document.getElementById("ttMarginMulti");
   const pointsAInput = document.getElementById("ttPointsA");
   const pointsBInput = document.getElementById("ttPointsB");
+  const formatSelect = document.getElementById("ttFormat");
 
   const calcBtn = document.getElementById("ttCalcBtn");
   const statusEl = document.getElementById("ttStatus");
@@ -43,8 +44,14 @@
     marginMultiInput,
     pointsAInput,
     pointsBInput,
+    formatSelect,
   ].forEach((input) => {
-    input.addEventListener("input", () => runModel(true));
+    if (!input) return;
+    if (input && input.tagName === "SELECT") {
+      input.addEventListener("change", () => runModel(true));
+    } else {
+      input.addEventListener("input", () => runModel(true));
+    }
   });
 
   calcBtn.addEventListener("click", () => runModel(false));
@@ -62,6 +69,7 @@
         a: parsePoints(pointsAInput, 15.5),
         b: parsePoints(pointsBInput, 7.5),
       };
+      const format = formatSelect && formatSelect.value === "bo7" ? "bo7" : "bo5";
 
       const result = engine.priceAllMarkets({
         oddsHome,
@@ -70,6 +78,7 @@
         marginBinary,
         marginMulti,
         pointsModel,
+        format,
       });
 
       renderWinner(result.winner);
@@ -80,11 +89,12 @@
       renderCorrectScore(result.correctScoreMarket);
       renderPointsSummary(result.pointsMarkets);
       renderDetails(result);
-      renderSetsDistribution(result.correctScoreMarket);
+      renderSetsDistribution(result.totalSets, result.correctScoreMarket);
 
-      statusEl.textContent = `Calculated: odds ${oddsHome.toFixed(
+      const formatLabel = format === "bo7" ? "BO7" : "BO5";
+      statusEl.textContent = `Calculated: odds ${oddsHome.toFixed(2)} vs ${oddsAway.toFixed(
         2
-      )} vs ${oddsAway.toFixed(2)} · BO5 assumed.`;
+      )} · Format ${formatLabel}.`;
     } catch (err) {
       if (!autoTriggered) {
         statusEl.textContent = err.message || "Calculation failed";
@@ -168,16 +178,18 @@
       totalsBody.innerHTML = `<tr><td colspan="3">Totals unavailable</td></tr>`;
       return;
     }
-    ["3", "4", "5"].forEach((label) => {
-      const priced = totalSets.priced[label];
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${label} sets</td>
-        <td>${formatPercent(priced.prob)}</td>
-        <td>${formatOdds(priced.prob)}</td>
-      `;
-      totalsBody.appendChild(tr);
-    });
+    Object.keys(totalSets.priced)
+      .sort((a, b) => Number(a) - Number(b))
+      .forEach((label) => {
+        const priced = totalSets.priced[label];
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${label} sets</td>
+          <td>${formatPercent(priced.prob)}</td>
+          <td>${formatOdds(priced.prob)}</td>
+        `;
+        totalsBody.appendChild(tr);
+      });
   }
 
   function renderTotalsOverUnder(totalSets) {
@@ -186,18 +198,11 @@
       totalsOuBody.innerHTML = `<tr><td colspan="3">Lines unavailable</td></tr>`;
       return;
     }
-    const lines = [
-      {
-        label: "3.5 sets",
-        over: totalSets.priced.over3_5,
-        under: totalSets.priced.under3_5,
-      },
-      {
-        label: "4.5 sets",
-        over: totalSets.priced.over4_5,
-        under: totalSets.priced.under4_5,
-      },
-    ];
+    const lines = totalSets.ouLines || [];
+    if (!lines.length) {
+      totalsOuBody.innerHTML = `<tr><td colspan="3">Lines unavailable</td></tr>`;
+      return;
+    }
     lines.forEach((line) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -215,25 +220,17 @@
       handicapBody.innerHTML = `<tr><td colspan="3">Handicap unavailable</td></tr>`;
       return;
     }
-    const priced = setsHandicap.priced;
-    const lines = [
-      {
-        label: "Player A -1.5 / Player B +1.5",
-        home: priced.homeMinus1_5,
-        away: priced.homePlus1_5,
-      },
-      {
-        label: "Player A -2.5 / Player B +2.5",
-        home: priced.homeMinus2_5,
-        away: priced.homePlus2_5,
-      },
-    ];
+    const lines = setsHandicap.lines || [];
+    if (!lines.length) {
+      handicapBody.innerHTML = `<tr><td colspan="3">Handicap unavailable</td></tr>`;
+      return;
+    }
     lines.forEach((line) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${line.label}</td>
-        <td>${formatPercent(line.home.prob)} · ${formatOdds(line.home.prob)}</td>
-        <td>${formatPercent(line.away.prob)} · ${formatOdds(line.away.prob)}</td>
+        <td>Player A ${line.line.toFixed(1)} / Player B ${(-line.line).toFixed(1)}</td>
+        <td>${formatPercent(line.priced.home.prob)} · ${formatOdds(line.priced.home.prob)}</td>
+        <td>${formatPercent(line.priced.away.prob)} · ${formatOdds(line.priced.away.prob)}</td>
       `;
       handicapBody.appendChild(tr);
     });
@@ -245,8 +242,20 @@
       correctScoreBody.innerHTML = `<tr><td colspan="3">Correct score unavailable</td></tr>`;
       return;
     }
-    const order = ["3-0", "3-1", "3-2", "0-3", "1-3", "2-3"];
-    order.forEach((label) => {
+    const labels = Object.keys(correctScore.priced);
+    if (!labels.length) {
+      correctScoreBody.innerHTML = `<tr><td colspan="3">Correct score unavailable</td></tr>`;
+      return;
+    }
+    const sorted = labels.sort((a, b) => {
+      const [ha, aa] = a.split("-").map(Number);
+      const [hb, ab] = b.split("-").map(Number);
+      const aHomeWin = ha > aa;
+      const bHomeWin = hb > ab;
+      if (aHomeWin !== bHomeWin) return aHomeWin ? -1 : 1;
+      return aHomeWin ? aa - ab : ha - hb;
+    });
+    sorted.forEach((label) => {
       const priced = correctScore.priced[label];
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -285,8 +294,10 @@
 
     const totalSets = result.totalSets ? result.totalSets.fair : null;
     if (totalSets) {
-      const expectedSets =
-        3 * totalSets["3"] + 4 * totalSets["4"] + 5 * totalSets["5"];
+      const expectedSets = Object.entries(totalSets).reduce(
+        (acc, [sets, prob]) => acc + Number(sets) * prob,
+        0
+      );
       detailExpectedSetsEl.textContent = expectedSets.toFixed(2);
     } else {
       detailExpectedSetsEl.textContent = "-";
@@ -300,42 +311,41 @@
     }
   }
 
-  function renderSetsDistribution(correctScore) {
+  function renderSetsDistribution(totalSets, correctScoreMarket) {
     setsDistBody.innerHTML = "";
-    if (!correctScore) {
+    if (!totalSets || !totalSets.fair || !correctScoreMarket) {
       setsDistBody.innerHTML = `<tr><td colspan="4">Distribution unavailable</td></tr>`;
       return;
     }
-    const fair = correctScore.fair;
-    const rows = [
-      {
-        sets: 3,
-        matchProb: fair["3-0"] + fair["0-3"],
-        pA: fair["3-0"],
-        pB: fair["0-3"],
-      },
-      {
-        sets: 4,
-        matchProb: fair["3-1"] + fair["1-3"],
-        pA: fair["3-1"],
-        pB: fair["1-3"],
-      },
-      {
-        sets: 5,
-        matchProb: fair["3-2"] + fair["2-3"],
-        pA: fair["3-2"],
-        pB: fair["2-3"],
-      },
-    ];
-    rows.forEach((row) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${row.sets}</td>
-        <td>${formatPercent(row.matchProb)}</td>
-        <td>${formatPercent(row.pA)}</td>
-        <td>${formatPercent(row.pB)}</td>
-      `;
-      setsDistBody.appendChild(tr);
-    });
+    const fair = totalSets.fair;
+    const correctScoreFair = correctScoreMarket.fair || {};
+
+    Object.keys(fair)
+      .sort((a, b) => Number(a) - Number(b))
+      .forEach((sets) => {
+        const matchProb = fair[sets];
+        const { homeWin, awayWin } = breakdownByWinner(Number(sets));
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${sets}</td>
+          <td>${formatPercent(matchProb)}</td>
+          <td>${formatPercent(homeWin)}</td>
+          <td>${formatPercent(awayWin)}</td>
+        `;
+        setsDistBody.appendChild(tr);
+      });
+
+    function breakdownByWinner(setsPlayed) {
+      let homeWin = 0;
+      let awayWin = 0;
+      Object.entries(correctScoreFair).forEach(([score, prob]) => {
+        const [home, away] = score.split("-").map(Number);
+        if (home + away === setsPlayed) {
+          if (home > away) homeWin += prob;
+          else awayWin += prob;
+        }
+      });
+      return { homeWin, awayWin };
+    }
   }
 })();
