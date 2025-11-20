@@ -3,16 +3,14 @@
 (function () {
   "use strict";
 
-  const engine = window.TableTennisEngine || window.TableTennisBo5Engine;
+  const engine = window.TableTennisEngine;
 
+  const formatSelect = document.getElementById("ttFormat");
   const oddsHomeInput = document.getElementById("ttOddsHome");
   const oddsAwayInput = document.getElementById("ttOddsAway");
   const marginWinnerInput = document.getElementById("ttMarginWinner");
   const marginBinaryInput = document.getElementById("ttMarginBinary");
   const marginMultiInput = document.getElementById("ttMarginMulti");
-  const pointsAInput = document.getElementById("ttPointsA");
-  const pointsBInput = document.getElementById("ttPointsB");
-  const formatSelect = document.getElementById("ttFormat");
 
   const calcBtn = document.getElementById("ttCalcBtn");
   const statusEl = document.getElementById("ttStatus");
@@ -37,6 +35,17 @@
   const pointsPerSetEl = document.getElementById("ttPointsPerSet");
   const pointsExpectedEl = document.getElementById("ttPointsExpected");
   const pointsHandicapEl = document.getElementById("ttPointsHandicap");
+  const formatNoteEl = document.getElementById("ttFormatNote");
+
+  [oddsHomeInput, oddsAwayInput].forEach((input) => {
+    if (!input) return;
+    input.addEventListener("change", () => runModel(true));
+  });
+
+  [oddsHomeInput, oddsAwayInput].forEach((input) => {
+    if (!input) return;
+    input.addEventListener("change", () => runModel(true));
+  });
 
   [oddsHomeInput, oddsAwayInput].forEach(function (input) {
     if (!input) return;
@@ -63,6 +72,16 @@
         runModel(true);
       });
     }
+  );
+
+  oddsHomeInput.addEventListener("input", () => {
+    autoFillAwayOdds();
+    runModel(true);
+  });
+
+  marginWinnerInput.addEventListener("input", () => {
+    autoFillAwayOdds();
+    runModel(true);
   });
 
   if (calcBtn) {
@@ -75,16 +94,12 @@
 
   function runModel(autoTriggered) {
     try {
+      const format = formatSelect.value;
       const oddsHome = parseOdds(oddsHomeInput);
       const oddsAway = parseOdds(oddsAwayInput);
       const marginWinner = parseOverround(marginWinnerInput);
       const marginBinary = parseOverround(marginBinaryInput);
       const marginMulti = parseOverround(marginMultiInput);
-      const pointsModel = {
-        a: parsePoints(pointsAInput, 15.5),
-        b: parsePoints(pointsBInput, 7.5),
-      };
-      const format = formatSelect && formatSelect.value === "bo7" ? "bo7" : "bo5";
 
       const result = engine.priceAllMarkets({
         oddsHome,
@@ -92,7 +107,6 @@
         marginWinner,
         marginBinary,
         marginMulti,
-        pointsModel,
         format,
       });
 
@@ -116,6 +130,20 @@
     }
   }
 
+  function autoFillAwayOdds() {
+    const homeOdds = parseFloat(oddsHomeInput.value);
+    const margin = parseOverroundValue(marginWinnerInput);
+    if (!Number.isFinite(homeOdds) || homeOdds <= 1 || !Number.isFinite(margin)) {
+      return;
+    }
+    const impliedHomeProb = 1 / homeOdds;
+    const targetOverround = margin;
+    const impliedAwayProb = targetOverround - impliedHomeProb;
+    if (impliedAwayProb <= 0) return;
+    const awayOdds = 1 / impliedAwayProb;
+    oddsAwayInput.value = awayOdds.toFixed(2);
+  }
+
   function parseOdds(input) {
     const val = parseFloat(input.value);
     if (!Number.isFinite(val) || val <= 1) {
@@ -127,21 +155,16 @@
   }
 
   function parseOverround(input) {
+    const factor = parseOverroundValue(input);
+    input.value = ((factor - 1) * 100).toFixed(1);
+    return factor;
+  }
+
+  function parseOverroundValue(input) {
     let pct = parseFloat(input.value);
     if (!Number.isFinite(pct)) pct = 0;
     pct = clamp(pct, 0, 100);
-    input.value = pct.toFixed(1);
     return 1 + pct / 100;
-  }
-
-  function parsePoints(input, fallback) {
-    const val = parseFloat(input.value);
-    if (!Number.isFinite(val)) {
-      input.value = fallback.toFixed(1);
-      return fallback;
-    }
-    input.value = val.toFixed(1);
-    return Math.max(0, val);
   }
 
   function clamp(x, lo, hi) {
@@ -177,8 +200,8 @@
       return;
     }
     const rows = [
-      { label: "Player A", prob: firstSet.priced.homeProb, odds: firstSet.priced.oddsHome },
-      { label: "Player B", prob: firstSet.priced.awayProb, odds: firstSet.priced.oddsAway },
+      { label: "Player A", prob: firstSet.priced.homeProb },
+      { label: "Player B", prob: firstSet.priced.awayProb },
     ];
     rows.forEach(function (row) {
       const tr = document.createElement("tr");
@@ -330,9 +353,9 @@
     detailExpectedSetPointsEl.textContent = formatPoints(pointsFair && pointsFair.expectedSetPoints);
   }
 
-  function renderSetsDistribution(totalSets, correctScoreMarket) {
+  function renderSetsDistribution(correctScore, meta) {
     setsDistBody.innerHTML = "";
-    if (!totalSets || !totalSets.fair || !correctScoreMarket) {
+    if (!correctScore) {
       setsDistBody.innerHTML = `<tr><td colspan="4">Distribution unavailable</td></tr>`;
       return;
     }
