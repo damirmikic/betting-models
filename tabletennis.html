@@ -74,7 +74,7 @@
             <h3>Match odds</h3>
             <span class="panel-note">Decimal prices &gt; 1.00</span>
           </div>
-          <div class="input-grid two">
+          <div class="input-grid three">
             <div class="input-card">
               <label for="ttOddsHome">Player A odds</label>
               <input type="number" id="ttOddsHome" min="1.01" step="0.01" value="1.65" inputmode="decimal" />
@@ -186,6 +186,21 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <div class="details-grid" style="margin-top:16px;">
+            <div class="detail-row">
+              <span>Expected set points</span>
+              <span id="ttPointsPerSet" class="detail-val">-</span>
+            </div>
+            <div class="detail-row">
+              <span>Expected match points</span>
+              <span id="ttPointsExpected" class="detail-val">-</span>
+            </div>
+            <div class="detail-row">
+              <span>Expected points handicap</span>
+              <span id="ttPointsHandicap" class="detail-val">-</span>
+            </div>
           </div>
         </section>
       </div>
